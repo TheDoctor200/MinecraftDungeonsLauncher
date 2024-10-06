@@ -29,8 +29,6 @@ run the following file under Windows, open a terminal at the files location:
 ```sh
 python main.py
 ```
-<br>
-<br>
 <p align=center>
 <img src="https://avatars.githubusercontent.com/u/88980346?v=4" alt="vri" width=110px>
 </p>
