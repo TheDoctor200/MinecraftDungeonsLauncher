@@ -3,7 +3,7 @@ import subprocess
 import os
 
 # Path to RUNE.ini
-rune_ini_file = "./RUNE.ini"  # Ensure this path is correct
+rune_ini_file = "./RUNE.ini"
 
 # Update RUNE.ini file with the player's name
 def update_rune_ini(player_name):

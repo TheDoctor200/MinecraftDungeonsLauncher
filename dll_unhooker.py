@@ -1,5 +1,4 @@
 import os
-import shutil
 
 def find_game_install_path(game_executable):
     # Get the current user's home directory
@@ -15,17 +14,16 @@ def find_game_install_path(game_executable):
 
     return None
 
-def copy_files_to_game_folder(game_folder, files):
+def remove_files_from_game_folder(game_folder, files):
     for file in files:
-        source_path = os.path.join(os.getcwd(), file)
-        destination_path = os.path.join(game_folder, file)
+        file_path = os.path.join(game_folder, file)
         
-        # Copy the file to the game folder
-        if os.path.exists(source_path):
-            shutil.copy(source_path, destination_path)
-            print(f"Copied {file} to {game_folder}")
+        # Remove the file from the game folder
+        if os.path.exists(file_path):
+            os.remove(file_path)
+            print(f"Removed {file} from {game_folder}")
         else:
-            print(f"{file} not found in the script directory.")
+            print(f"{file} not found in the game folder.")
 
 def main():
     game_executable = "Dungeons-Win64-Shipping.exe"
@@ -36,11 +34,11 @@ def main():
     if game_install_path:
         print(f"Game installation path found: {game_install_path}")
 
-        # List of files to copy
-        files_to_copy = ["winmm.dll", "RUNE.ini"]
+        # List of files to remove
+        files_to_remove = ["winmm.dll", "RUNE.ini"]
 
-        # Copy the specified files to the game's installation folder
-        copy_files_to_game_folder(game_install_path, files_to_copy)
+        # Remove the specified files from the game's installation folder
+        remove_files_from_game_folder(game_install_path, files_to_remove)
     else:
         print(f"{game_executable} not found in the specified path.")
 
