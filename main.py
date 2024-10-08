@@ -1,6 +1,8 @@
 import flet as ft
 import subprocess
 import os
+import threading
+import time
 
 # Path to RUNE.ini
 rune_ini_file = "./RUNE.ini"  # Path to RUNE.ini in the app's folder
@@ -8,8 +10,26 @@ rune_ini_file = "./RUNE.ini"  # Path to RUNE.ini in the app's folder
 def main(page: ft.Page):
     page.bgcolor = "#2E2E2E"  # Dark grey background for the whole page
 
+    # Background images list
+    background_images = [
+        "./assets/DungeonsBG.png",
+        "./assets/mvc1minecraft-1635640703.png",  
+        "./assets/wp5929735.png",
+        "./assets/wp5929830.png"
+        "./assets/wp6369300.png"
+    ]
+    
+    current_image_index = 0  # Index to keep track of the current image
+
+    # Function to change the background image
+    def change_background_image():
+        nonlocal current_image_index
+        current_image_index = (current_image_index + 1) % len(background_images)
+        background_image.source = background_images[current_image_index]
+        page.update()
+
     # Function to run update_app.py
-    def run_update_app():
+    def run_update_app(event):
         try:
             subprocess.run(["python", "update_app.py"], check=True)
             print("Update script ran successfully.")
@@ -40,7 +60,7 @@ def main(page: ft.Page):
         )
 
         # Save and update the player name in RUNE.ini
-        def save_player_name():
+        def save_player_name(event):
             player_name = name_input.value
             update_rune_ini(player_name)  # Update RUNE.ini with the player name
             page.go("/")  # Return to main launcher page
@@ -133,6 +153,10 @@ def main(page: ft.Page):
             width=220,  # Define width for better layout
         )
 
+        # Background image placeholder
+        global background_image  # Declare background_image as global
+        background_image = ft.Image(src=background_images[current_image_index], width=600, height=400, border_radius=15)  # Initial background image
+
         # Main content area with background image and rounded corners
         main_content = ft.Container(
             ft.Column(
@@ -141,14 +165,14 @@ def main(page: ft.Page):
                     ft.Container(
                         ft.Column(
                             [
-                                ft.Image(src="./assets/DungeonsBG.png", width=600, height=400, border_radius=15),  # Background image with rounded corners
+                                background_image,  # Display the current background image
                                 ft.Text(
                                     "An all-new action-adventure game, inspired by classic dungeon crawlers, coming to PC, Nintendo Switch, PlayStation 4, Xbox One, and Xbox Game Pass May 26.",
                                     size=16,
                                     color="#E0E0E0",  # Lighter grey for the description
                                     text_align=ft.TextAlign.CENTER  # Centered text
                                 ),
-                                ft.ElevatedButton("PLAY",  # Changed from "PRE-ORDER" to "PLAY"
+                                ft.ElevatedButton("PLAY",  
                                                   on_click=lambda e: print("Play clicked"),
                                                   bgcolor="#FF5722",  # Dark orange button
                                                   color="#FFFFFF",  # White text
@@ -186,12 +210,24 @@ def main(page: ft.Page):
             expand=True  # Ensure the row expands to the full page width
         )
 
+    # Function to start background image rotation
+    def start_background_rotation():
+        while True:
+            change_background_image()
+            time.sleep(5)  # Change the image every 5 seconds
+
     # Set the initial page view
     page.views.append(ft.View("/", [main_view()]))
     page.update()
 
+    # Start background rotation in a separate thread
+    threading.Thread(target=start_background_rotation, daemon=True).start()
+
 # Running the app with the assets folder
 ft.app(target=main, assets_dir="assets")
+
+
+
 
 
 
