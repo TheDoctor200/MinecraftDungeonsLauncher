@@ -7,8 +7,8 @@ import sys
 import os
 
 # Constants
-GITHUB_API_URL = ""
-RELEASE_PAGE_URL = ""
+GITHUB_API_URL = "https://api.github.com/repos/TheDoctor200/MinecraftDungeonsLauncher/releases/latest"
+RELEASE_PAGE_URL = "https://github.com/TheDoctor200/MinecraftDungeonsLauncher/releases"
 CURRENT_VERSION_FILE = "version.txt"  # Path to your app version file
 
 # Utility to display message boxes
