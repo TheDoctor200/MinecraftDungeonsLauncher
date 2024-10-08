@@ -1,6 +1,7 @@
 import flet as ft
 import subprocess
 import os
+import sys
 
 # Path to RUNE.ini
 rune_ini_file = "./RUNE.ini"
@@ -23,13 +24,29 @@ def update_rune_ini(player_name):
 def main(page: ft.Page):
     page.bgcolor = "#2E2E2E"  # Dark grey background for the whole page
 
-    # Function to run update_app.py
+    # Function to run the update_app.py
     def run_update_app():
         try:
             subprocess.run(["python", "update_app.py"], check=True)
             print("Update script ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running update_app.py: {e}")
+
+    # Function to run dll_hooker.py
+    def run_dll_hooker():
+        try:
+            subprocess.Popen(["python", "dll_hooker.py"])  # Use Popen to run without blocking
+            print("dll_hooker.py launched successfully.")
+        except Exception as e:
+            print(f"Error launching dll_hooker.py: {e}")
+
+    # Function to run dll_unhooker.py
+    def run_dll_unhooker():
+        try:
+            subprocess.Popen(["python", "dll_unhooker.py"])  # Use Popen to run without blocking
+            print("dll_unhooker.py launched successfully.")
+        except Exception as e:
+            print(f"Error launching dll_unhooker.py: {e}")
 
     # Function to show settings page
     def show_settings(e):
@@ -47,8 +64,9 @@ def main(page: ft.Page):
             update_rune_ini(value)
 
         # Save settings and close settings page
-        def close_settings_and_save():
-            page.go("/")  # Return to main launcher page
+        def close_settings_and_save(e):
+            # Save changes and close the app
+            page.close()  # Close the app
 
         # Settings page content
         settings_content = ft.Container(
@@ -65,7 +83,7 @@ def main(page: ft.Page):
                     ),
                     ft.ElevatedButton(
                         "Save & Close",
-                        on_click=lambda e: close_settings_and_save(),
+                        on_click=close_settings_and_save,  # Directly close the app here
                         bgcolor="#4CAF50",
                         color="#FFFFFF"
                     ),
@@ -103,7 +121,7 @@ def main(page: ft.Page):
                     ),
                     ft.Divider(color="#424242"),  # Divider in dark grey for contrast
                     ft.Text("Minecraft Dungeons", size=24, weight=ft.FontWeight.BOLD, color="#E0E0E0"),  # Title
-                    ft.TextButton("Offline Play", on_click=lambda e: print("Spielen clicked"),
+                    ft.TextButton("Offline Play", on_click=lambda e: run_dll_hooker(),  # Launch dll_hooker.py
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",  # Light grey text
                                       shape=ft.RoundedRectangleBorder(radius=8),  # Rounded corners
@@ -152,7 +170,7 @@ def main(page: ft.Page):
                         text_align=ft.TextAlign.CENTER  # Centered text
                     ),
                     ft.ElevatedButton("PLAY ONLINE",  # Play button
-                                      on_click=lambda e: print("Play clicked"),
+                                      on_click=lambda e: run_dll_unhooker(),  # Launch dll_unhooker.py
                                       bgcolor="#FF5722",  # Dark orange button
                                       color="#FFFFFF",  # White text
                                       style=ft.ButtonStyle(
@@ -187,6 +205,7 @@ def main(page: ft.Page):
 
 # Run the app with the assets folder
 ft.app(target=main, assets_dir="assets")
+
 
 
 
