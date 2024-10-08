@@ -33,18 +33,19 @@ python main.py
 **Q:** Which Minecraft Dungeons Versions are supported?<br>
 **A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
 
-**Q:** Where to get mods?<br>
-**A:** <a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong>
-<a href="https://www.nexusmods.com/minecraftdungeons"><strong>Nexusmods</strong>
+**Q:** Where to get mods?
+<br>**A:**<br><a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong><br>
+<a href="https://www.nexusmods.com/minecraftdungeons"><strong>Nexusmods</strong></a>
 
-**For modders:** 
-<a href="https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit"><strong>Mod-Kit,</strong>
-</a>
+**Modding Tools:** <br>
+<a href="https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit"><strong>Mod-Kit</strong><br>
 <a href="https://github.com/CutFlame/MCDSaveEdit">
-		<strong>Minecraft Dungeons Save File Editor</strong>
-</a>
+		<strong>Minecraft Dungeons Save File Editor</strong></a>
+<br>
 
 >The **Microsoft Store / Xbox Version** might work if you edit **RUNE.ini** manually to your prefered Playername and copy it over with **winm.dll** into the game directory where <br> **Dungeons-Win64-Shipping.exe** is located.
+<br>
+<br>
 ---
 <br>
 <p align=center>
