@@ -45,8 +45,9 @@ python main.py
 
 >The **Microsoft Store / Xbox Version** might work if you edit **RUNE.ini** manually to your prefered Playername and copy it over with **winm.dll** into the game directory where <br> **Dungeons-Win64-Shipping.exe** is located.
 <br>
-<br>
+
 ---
+
 <br>
 <p align=center>
 <img src="https://avatars.githubusercontent.com/u/88980346?v=4" alt="vri" width=110px>
