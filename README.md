@@ -64,7 +64,9 @@ a project by TheDoctor
 </p>
 <p align=center>
 brought to life with the goal to make the already amazing Minecraft Dungeons Game better and keeping it alive with an offline mode to enjoy it on the go :)
-<br> Note: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER
+<br> 
+	<br>
+	NOTE: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER
 </p>
 
 ---
