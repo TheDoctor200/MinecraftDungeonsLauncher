@@ -103,7 +103,7 @@ def main(page: ft.Page):
                     ),
                     ft.Divider(color="#424242"),  # Divider in dark grey for contrast
                     ft.Text("Minecraft Dungeons", size=24, weight=ft.FontWeight.BOLD, color="#E0E0E0"),  # Title
-                    ft.TextButton("Spielen", on_click=lambda e: print("Spielen clicked"),
+                    ft.TextButton("Offline Play", on_click=lambda e: print("Spielen clicked"),
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",  # Light grey text
                                       shape=ft.RoundedRectangleBorder(radius=8),  # Rounded corners
@@ -122,7 +122,7 @@ def main(page: ft.Page):
                                       bgcolor="#FF9800"  # Orange button
                                   )),
                     ft.Divider(color="#424242"),  # Divider in dark grey for contrast
-                    ft.TextButton("Einstellungen", on_click=show_settings,  # Show settings page
+                    ft.TextButton("Settings", on_click=show_settings,  # Show settings page
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",
                                       shape=ft.RoundedRectangleBorder(radius=8),
@@ -151,7 +151,7 @@ def main(page: ft.Page):
                         color="#E0E0E0",  # Description
                         text_align=ft.TextAlign.CENTER  # Centered text
                     ),
-                    ft.ElevatedButton("PLAY",  # Play button
+                    ft.ElevatedButton("PLAY ONLINE",  # Play button
                                       on_click=lambda e: print("Play clicked"),
                                       bgcolor="#FF5722",  # Dark orange button
                                       color="#FFFFFF",  # White text
