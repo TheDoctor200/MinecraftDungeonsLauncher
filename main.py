@@ -22,7 +22,6 @@ def update_rune_ini(player_name):
 
 def main(page: ft.Page):
     page.bgcolor = "#2E2E2E"  # Dark grey background for the whole page
-
     # Function to run update_app.py
     def run_update_app():
         try:
@@ -189,7 +188,7 @@ def main(page: ft.Page):
                     ft.Container(expand=True),  # Push the version info to the bottom
                     ft.Row(  # App version and image at the bottom-left of the sidebar
                         [
-                            ft.Image(src="./assets/version_icon.png", width=40, height=40),  # Version icon
+                            ft.Image(src="./assets/favicon.png", width=40, height=40),  # Version icon
                             ft.Text("Version 1.25", size=16, color="#E0E0E0"),  # Version text
                         ],
                         alignment=ft.MainAxisAlignment.START,
