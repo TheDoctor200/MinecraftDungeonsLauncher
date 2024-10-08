@@ -21,7 +21,10 @@ def update_rune_ini(player_name):
         print(f"Error: {rune_ini_file} not found.")
 
 def main(page: ft.Page):
+    # Set the app icon
+    page.icon = "assets/favicon.png"  # Set the path to your favicon
     page.bgcolor = "#2E2E2E"  # Dark grey background for the whole page
+
     # Function to run update_app.py
     def run_update_app():
         try:
@@ -253,6 +256,7 @@ def main(page: ft.Page):
 
 # Run the app
 ft.app(target=main, assets_dir="assets")
+
 
 
 
