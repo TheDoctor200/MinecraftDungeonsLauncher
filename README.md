@@ -29,6 +29,27 @@ run the following file under Windows, open a terminal at the files location:
 ```sh
 python main.py
 ```
+## FAQ:
+**Q:** Which Minecraft Dungeons Versions are supported?<br>
+**A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
+
+**Q:** Where to get mods?<br>
+**A:** <a href="https://www.curseforge.com/minecraft-dungeons">
+		<strong>Curseforge,</strong>
+<a href="https://www.nexusmods.com/minecraftdungeons">
+		<strong>Nexusmods</strong>
+
+**For modders:** 
+<a href="https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit">
+		<strong>Mod-Kit,</strong>
+</a>
+<a href="https://github.com/CutFlame/MCDSaveEdit">
+		<strong>Minecraft Dungeons Save File Editor</strong>
+</a>
+
+> The **Microsoft Store / Xbox Version** might work if you edit **RUNE.ini** manually to your prefered Playername and copy it over with **winm.dll** into the game directory where <br> **Dungeons-Win64-Shipping.exe** is located.
+---
+<br>
 <p align=center>
 <img src="https://avatars.githubusercontent.com/u/88980346?v=4" alt="vri" width=110px>
 </p>
@@ -36,7 +57,7 @@ python main.py
 a project by TheDoctor
 </p>
 <p align=center>
-brought to life with the goal to make the already amazing Minecraft Dungeons Game better and keeping it alive with mods and more.
+brought to life with the goal to make the already amazing Minecraft Dungeons Game better and keeping it alive with an offline mode to enjoy it on the go :)
 </p>
 
 ---
