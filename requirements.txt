@@ -1,5 +1,0 @@
-        "./assets/DungeonsBG.png",
-        "./assets/mvc1minecraft-1635640703.png",  # Replace with your actual image paths
-        "./assets/wp5929735.png",
-        "./assets/wp5929830.png"
-        "./assets/wp6369300.png"
