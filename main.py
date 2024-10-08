@@ -190,7 +190,7 @@ def main(page: ft.Page):
                     ft.Row(  # App version and image at the bottom-left of the sidebar
                         [
                             ft.Image(src="./assets/version_icon.png", width=40, height=40),  # Version icon
-                            ft.Text("Version 1.0.0", size=16, color="#E0E0E0"),  # Version text
+                            ft.Text("Version 1.0", size=16, color="#E0E0E0"),  # Version text
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
@@ -213,7 +213,7 @@ def main(page: ft.Page):
                     ft.Text("Minecraft Dungeons Launcher", size=32, weight=ft.FontWeight.BOLD, color="#FFFFFF"),  # Title
                     ft.Image(src="assets/DungeonsBG.gif", width=600, height=400, border_radius=15),  # GIF Background
                     ft.Text(
-                        "An all-new action-adventure game, inspired by classic dungeon crawlers, coming to PC, Nintendo Switch, PlayStation 4, Xbox One, and Xbox Game Pass May 26.",
+                        "An all-new action-adventure game, inspired by classic dungeon crawlers, now available on PC, Nintendo, Xbox Gamepass and on Steam.",
                         size=16,
                         color="#E0E0E0",  # Description
                         text_align=ft.TextAlign.CENTER  # Centered text

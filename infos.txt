@@ -1,0 +1,10 @@
+Q: Which Minecraft Dungeons Versions are supported?
+A: The Launcher is made for the Minecraft Launcher Version only, not the Microsoft Store Version.
+
+Q: How do i Import my Save Files from the other profile:
+A:
+You can find your saves inside:
+C:\Users\YourUserName\Saved Games\Mojang Studios\Dungeons\LargeNumber\Characters
+copy the file inside to the other folder inside ./Mojang Studios\Dungeons\2000000000000000\Characters
+
+Made by TheDoctor
