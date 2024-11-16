@@ -192,7 +192,7 @@ def main(page: ft.Page):
                     ft.Row(  # App version and image at the bottom-left of the sidebar
                         [
                             ft.Image(src="./assets/favicon.png", width=40, height=40),  # Version icon
-                            ft.Text("Version 1.25", size=16, color="#E0E0E0"),  # Version text
+                            ft.Text("Version 1.3", size=16, color="#E0E0E0"),  # Version text
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
