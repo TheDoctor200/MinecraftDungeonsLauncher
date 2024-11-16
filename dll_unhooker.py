@@ -1,4 +1,8 @@
 import os
+import ctypes
+
+def hide_console():
+    ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
 
 def find_game_install_path(game_executable):
     # Get the current user's home directory
@@ -26,6 +30,8 @@ def remove_files_from_game_folder(game_folder, files):
             print(f"{file} not found in the game folder.")
 
 def main():
+    hide_console()  # Hide the console window immediately when the script runs
+    
     game_executable = "Dungeons-Win64-Shipping.exe"
     
     # Find the installation path of the game
@@ -44,3 +50,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
