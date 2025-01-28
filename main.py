@@ -23,7 +23,7 @@ def update_rune_ini(player_name):
 def main(page: ft.Page):
     # Set the app icon
     page.icon = "assets/favicon.png"  # Set the path to your favicon
-    page.bgcolor = "#2E2E2E"  # Dark grey background for the whole page
+    page.bgcolor = "#1C1C1C"  # Dark background for the whole page
 
     # Function to run update_app.py
     def run_update_app():
@@ -63,18 +63,17 @@ def main(page: ft.Page):
         name_input = ft.TextField(
             value="TheDoctor",  # Default player name
             label="Player Name",
-            on_change=lambda event: update_player_name(event.control.value),  # Accessing the value correctly
+            on_change=lambda event: update_player_name(event.control.value),
             width=300
         )
 
         # Update player name in settings
         def update_player_name(value):
-            # Update RUNE.ini immediately when the user types
             update_rune_ini(value)
 
         # Save settings and close the app
         def close_settings_and_save():
-            page.window_close()  # Close the entire app
+            page.window_close()
 
         # Settings page content
         settings_content = ft.Container(
@@ -100,15 +99,14 @@ def main(page: ft.Page):
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 spacing=20
             ),
-            bgcolor="#3E3E3E",  # Dark grey background
+            bgcolor="#3E3E3E",
             padding=30,
-            border_radius=15,  # Rounded corners
-            expand=True  # Expand to fill the page
+            border_radius=15,
+            expand=True
         )
 
         # Navigate to the settings page
         page.go("/settings")
-        # Clear existing page content and add the settings content
         page.views.clear()
         page.views.append(ft.View("/", [main_view()]))
         page.views.append(ft.View("/settings", [settings_content]))
@@ -124,75 +122,69 @@ def main(page: ft.Page):
                 title=ft.Text("Infos", size=24),
                 content=ft.Text(readme_content),
                 actions=[
-                    ft.TextButton("Close", on_click=lambda e: close_dialog(dialog))  # Call close_dialog
+                    ft.TextButton("Close", on_click=lambda e: close_dialog(dialog))
                 ],
                 modal=True,
                 shape=ft.RoundedRectangleBorder(radius=10),
             )
 
-            page.dialog = dialog  # Set the dialog to the page dialog
-            dialog.open = True  # Open the dialog
-            page.update()  # Update the page to reflect changes
+            page.dialog = dialog
+            dialog.open = True
+            page.update()
 
         except Exception as e:
             print(f"Error opening README.md: {e}")
 
     # Helper function to close the dialog
     def close_dialog(dialog):
-        dialog.open = False  # Set the open property to False to close the dialog
-        page.update()  # Update the page to reflect the changes
+        dialog.open = False
+        page.update()
 
     # Main view layout
     def main_view():
-        # Sidebar content with black background and rounded corners
+        # Sidebar content with dark background and rounded corners
         sidebar = ft.Container(
             ft.Column(
                 [
                     ft.Row(
                         [
-                            ft.Image(src="./assets/Glow_Squidy.gif", width=50, height=50),  # User image
-                            ft.Text("TheDoctor", size=20, color="#E0E0E0", weight=ft.FontWeight.BOLD)  # Default Player's name
+                            ft.Image(src="./assets/Glow_Squidy.gif", width=50, height=50),
+                            ft.Text("TheDoctor", size=20, color="#E0E0E0", weight=ft.FontWeight.BOLD)
                         ],
                         alignment=ft.MainAxisAlignment.START
                     ),
-                    ft.Divider(color="#424242"),  # Divider in dark grey for contrast
-                    ft.Text("Minecraft Dungeons", size=24, weight=ft.FontWeight.BOLD, color="#E0E0E0"),  # Title
-                    ft.TextButton("Start Game", on_click=start_game,  # Launch Dungeons.exe
+                    ft.Divider(color="#424242"),
+                    ft.Text("Minecraft Dungeons", size=24, weight=ft.FontWeight.BOLD, color="#E0E0E0"),
+                    ft.TextButton("Offline Play", on_click=lambda e: run_dll_hooker(),
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",
                                       shape=ft.RoundedRectangleBorder(radius=8),
-                                      bgcolor="#00BCD4"  # Cyan button
-                                  )),
-                    ft.TextButton("Offline Play", on_click=lambda e: run_dll_hooker(),  # Launch dll_hooker.py
-                                  style=ft.ButtonStyle(
-                                      color="#E0E0E0",  # Light grey text
-                                      shape=ft.RoundedRectangleBorder(radius=8),  # Rounded corners
-                                      bgcolor="#4CAF50"  # Green button
+                                      bgcolor="#4CAF50"
                                   )),
                     ft.TextButton("Beta", on_click=lambda e: print("Beta clicked"),
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",
                                       shape=ft.RoundedRectangleBorder(radius=8),
-                                      bgcolor="#2196F3"  # Blue button
+                                      bgcolor="#2196F3"
                                   )),
-                    ft.TextButton("FAQ", on_click=show_readme,  # Show README in a new dialog
+                    ft.TextButton("FAQ", on_click=show_readme,
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",
                                       shape=ft.RoundedRectangleBorder(radius=8),
-                                      bgcolor="#FF9800"  # Orange button
+                                      bgcolor="#FF9800"
                                   )),
-                    ft.Divider(color="#424242"),  # Divider in dark grey for contrast
-                    ft.TextButton("Settings", on_click=show_settings,  # Show settings page
+                    ft.Divider(color="#424242"),
+                    ft.TextButton("Settings", on_click=show_settings,
                                   style=ft.ButtonStyle(
                                       color="#E0E0E0",
                                       shape=ft.RoundedRectangleBorder(radius=8),
-                                      bgcolor="#9E9E9E"  # Grey button
+                                      bgcolor="#9E9E9E"
                                   )),
-                    ft.Container(expand=True),  # Push the version info to the bottom
-                    ft.Row(  # App version and image at the bottom-left of the sidebar
+                    ft.Container(expand=True),
+                    ft.Row(
                         [
-                            ft.Image(src="./assets/favicon.png", width=40, height=40),  # Version icon
-                            ft.Text("Version 1.3", size=16, color="#E0E0E0"),  # Version text
+                            ft.Image(src="./assets/favicon.png", width=40, height=40),
+                            ft.Text("Version 1.3", size=16, color="#E0E0E0"),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
@@ -200,33 +192,33 @@ def main(page: ft.Page):
                 spacing=10,
                 alignment=ft.MainAxisAlignment.START,
                 horizontal_alignment=ft.CrossAxisAlignment.START,
-                expand=True  # Ensure that the sidebar takes full vertical space
+                expand=True
             ),
-            bgcolor="#000000",  # Black background for sidebar
+            bgcolor="#000000",
             padding=15,
-            border_radius=15,  # Rounded corners for the sidebar
-            width=220,  # Define width for better layout
+            border_radius=15,
+            width=220,
         )
 
         # Main content area with background image
         main_content = ft.Container(
             ft.Column(
                 [
-                    ft.Text("Minecraft Dungeons Launcher", size=32, weight=ft.FontWeight.BOLD, color="#FFFFFF"),  # Title
-                    ft.Image(src="assets/DungeonsBG.gif", width=600, height=400, border_radius=15),  # GIF Background
+                    ft.Text("Minecraft Dungeons Launcher", size=32, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
+                    ft.Image(src="assets/DungeonsBG.gif", width=600, height=400, border_radius=15),
                     ft.Text(
                         "An all-new action-adventure game, inspired by classic dungeon crawlers, now available on PC, Nintendo, Xbox Gamepass and on Steam.",
                         size=16,
-                        color="#E0E0E0",  # Description
-                        text_align=ft.TextAlign.CENTER  # Centered text
+                        color="#E0E0E0",
+                        text_align=ft.TextAlign.CENTER
                     ),
-                    ft.ElevatedButton("PLAY ONLINE",  # Play button
-                                      on_click=lambda e: run_dll_unhooker(),  # Launch dll_unhooker.py
-                                      bgcolor="#FF5722",  # Dark orange button
-                                      color="#FFFFFF",  # White text
+                    ft.ElevatedButton("PLAY ONLINE",
+                                      on_click=lambda e: run_dll_unhooker(),
+                                      bgcolor="#FF5722",
+                                      color="#FFFFFF",
                                       style=ft.ButtonStyle(
-                                          shape=ft.RoundedRectangleBorder(radius=10),  # Rounded button
-                                          padding=ft.padding.symmetric(horizontal=20, vertical=10)  # Add padding to the button
+                                          shape=ft.RoundedRectangleBorder(radius=10),
+                                          padding=ft.padding.symmetric(horizontal=20, vertical=10)
                                       )
                     ),
                 ],
@@ -234,24 +226,24 @@ def main(page: ft.Page):
                 alignment=ft.MainAxisAlignment.CENTER,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER
             ),
-            bgcolor="#3E3E3E",  # Dark grey background for the content area
+            bgcolor="#3E3E3E",
             padding=30,
-            border_radius=15,  # Rounded corners for the content container
+            border_radius=15,
         )
 
         # Return the main view with sidebar and main content
         return ft.Row(
             [
-                sidebar,  # Sidebar
-                ft.VerticalDivider(width=1, color="#757575"),  # Grey divider
-                main_content,  # Main content
+                sidebar,
+                ft.VerticalDivider(width=1, color="#757575"),
+                main_content,
             ],
             alignment=ft.MainAxisAlignment.START,
-            expand=True  # Ensure the row expands to the full page width
+            expand=True
         )
 
     # Set the main view when the app starts
-    page.views.append(ft.View("/", [main_view()]))  # Main view with sidebar and content
+    page.views.append(ft.View("/", [main_view()]))
     page.update()
 
 # Run the app
