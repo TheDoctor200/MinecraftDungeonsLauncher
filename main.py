@@ -1,10 +1,26 @@
 import flet as ft
 import subprocess
 import os
+import json
 
 # Path to RUNE.ini
 rune_ini_file = "./RUNE.ini"
+settings_file = "./settings.json"  # File to store settings
 
+# Load settings from file
+def load_settings():
+    try:
+        with open(settings_file, "r") as f:
+            settings = json.load(f)
+            return settings
+    except FileNotFoundError:
+        # Return default settings if file not found
+        return {"app_scale": 1.0}
+
+# Save settings to file
+def save_settings(settings):
+    with open(settings_file, "w") as f:
+        json.dump(settings, f)
 
 # Update RUNE.ini file with the player's name
 def update_rune_ini(player_name):
@@ -29,6 +45,10 @@ def main(page: ft.Page):
 
     player_name = "TheDoctor" # Variable to store Player Name
 
+    # Load settings
+    settings = load_settings()
+    page.scale = settings.get("app_scale", 1.0)
+
     # Function to run update_app.py
     def run_update_app():
         try:
@@ -50,12 +70,32 @@ def main(page: ft.Page):
             content_padding=10, # Padding around the input text
         )
 
+        # Slider for app scale
+        app_scale_slider = ft.Slider(
+            min=0.5,
+            max=2.0,
+            value=page.scale,
+            divisions=6,
+            label="{value}x",
+            on_change=lambda e: on_app_scale_change(e),
+        )
+
+        # Update app scale
+        def on_app_scale_change(e):
+            page.scale = e.control.value
+            page.update()
+
         # Save settings and return to the main app
         def close_settings_and_save(e):
             global player_name
             player_name = name_input.value  # Update the global player name
             update_rune_ini(player_name)  # Update the INI file
             page.controls[0] = main_view()  # Go back to the main view
+
+            # Save settings
+            settings["app_scale"] = page.scale
+            save_settings(settings)
+            
             page.update()
 
         # Settings page content
@@ -72,6 +112,8 @@ def main(page: ft.Page):
                         "Enter your player name:", size=16, color="#E0E0E0"
                     ),
                     name_input,
+                    ft.Text("App Scale:", size=16, color="#E0E0E0"),
+                    app_scale_slider,  # Add the slider to settings
                     ft.ElevatedButton(
                         "Update App",
                         on_click=lambda e: run_update_app(),
@@ -194,7 +236,7 @@ def main(page: ft.Page):
             width=220,
             # Add a subtle shadow to the sidebar
             shadow=ft.BoxShadow(
-                color=ft.colors.BLACK,
+                color=ft.Colors.BLACK,
                 blur_radius=10,
                 offset=ft.Offset(5, 5),
             ),
@@ -245,7 +287,7 @@ def main(page: ft.Page):
             border_radius=15,
             # Add a subtle shadow to the main content
             shadow=ft.BoxShadow(
-                color=ft.colors.BLACK,
+                color=ft.Colors.BLACK,
                 blur_radius=10,
                 offset=ft.Offset(5, 5),
             ),
@@ -294,7 +336,7 @@ def main(page: ft.Page):
                 shape=ft.RoundedRectangleBorder(radius=10),
             )
 
-            page.dialog = dialog
+            page.overlay.append(dialog)
             dialog.open = True
             page.update()
 
