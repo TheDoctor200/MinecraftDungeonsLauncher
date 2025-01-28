@@ -70,32 +70,12 @@ def main(page: ft.Page):
             content_padding=10, # Padding around the input text
         )
 
-        # Slider for app scale
-        app_scale_slider = ft.Slider(
-            min=0.5,
-            max=2.0,
-            value=page.scale,
-            divisions=6,
-            label="{value}x",
-            on_change=lambda e: on_app_scale_change(e),
-        )
-
-        # Update app scale
-        def on_app_scale_change(e):
-            page.scale = e.control.value
-            page.update()
-
         # Save settings and return to the main app
         def close_settings_and_save(e):
             global player_name
             player_name = name_input.value  # Update the global player name
             update_rune_ini(player_name)  # Update the INI file
             page.controls[0] = main_view()  # Go back to the main view
-
-            # Save settings
-            settings["app_scale"] = page.scale
-            save_settings(settings)
-            
             page.update()
 
         # Settings page content
@@ -112,8 +92,6 @@ def main(page: ft.Page):
                         "Enter your player name:", size=16, color="#E0E0E0"
                     ),
                     name_input,
-                    ft.Text("App Scale:", size=16, color="#E0E0E0"),
-                    app_scale_slider,  # Add the slider to settings
                     ft.ElevatedButton(
                         "Update App",
                         on_click=lambda e: run_update_app(),
