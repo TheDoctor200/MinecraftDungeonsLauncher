@@ -4,4 +4,7 @@ A: The Launcher is made for the Minecraft Launcher Version only!, not the Micros
 Q: How do i Import my Save Files from the other profile:
 A: Use the character location Button :)
 
+Q: How do i use mods:
+A: Click the "mod button" and in this folder, create a new folder called "~mods" put your .pak files here.
+
 Made by TheDoctor
