@@ -165,8 +165,8 @@ def main(page: ft.Page):
                         ),
                     ),
                     ft.TextButton(
-                        "Beta",
-                        on_click=lambda e: print("Beta clicked"),
+                        "Character location",
+                        on_click=lambda e: print("TEST"),
                         style=ft.ButtonStyle(
                             color="#E0E0E0",
                             shape=ft.RoundedRectangleBorder(radius=8),
