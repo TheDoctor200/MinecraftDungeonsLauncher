@@ -165,14 +165,23 @@ def main(page: ft.Page):
                         ),
                     ),
                     ft.TextButton(
-                        "Character location",
-                        on_click=lambda e: print("TEST"),
+                        "Open Character location",
+                        on_click=lambda e: run_charachter_loc(),
                         style=ft.ButtonStyle(
                             color="#E0E0E0",
                             shape=ft.RoundedRectangleBorder(radius=8),
                             bgcolor="#2196F3",  # Blue button
                         ),
                     ),
+                    ft.TextButton(
+                        "Open Mods location",
+                        on_click=lambda e: run_mods_loc(),
+                        style=ft.ButtonStyle(
+                            color="#E0E0E0",
+                            shape=ft.RoundedRectangleBorder(radius=8),
+                            bgcolor="#2196F3",  # Blue button
+                        ),
+                    ),                   
                     ft.TextButton(
                         "FAQ",
                         on_click=show_readme,
@@ -289,6 +298,14 @@ def main(page: ft.Page):
             print("dll_hooker.py ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running dll_hooker.py: {e}")
+
+    # Function to run character_location_check.py
+    def run_charachter_loc():
+        try:
+            subprocess.run(["python", "character_location_check.py"], check=True)
+            print("character_location_check.py ran successfully.")
+        except subprocess.CalledProcessError as e:
+            print(f"Error running character_location_check.py: {e}")
 
     # Function to run dll_unhooker.py
     def run_dll_unhooker():
