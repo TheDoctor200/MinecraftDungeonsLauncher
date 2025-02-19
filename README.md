@@ -10,7 +10,7 @@
 	</strong>
 	<br>
 	<br>
-	<a href="thedoctor.ct.ws">
+	<a href="https://thedoctor.ct.ws">
 		<strong>TheDoctors Socials</strong>
 	</a>
 </p>
