@@ -10,7 +10,7 @@
 	</strong>
 	<br>
 	<br>
-	<a href="https://linktr.ee/thedoctor199">
+	<a href="thedoctor.ct.ws">
 		<strong>TheDoctors Socials</strong>
 	</a>
 </p>
