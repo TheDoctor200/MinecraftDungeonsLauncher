@@ -307,6 +307,14 @@ def main(page: ft.Page):
         except subprocess.CalledProcessError as e:
             print(f"Error running character_location_check.py: {e}")
 
+    # Function to run mod_location_check.py
+    def run_mods_loc():
+        try:
+            subprocess.run(["python", "mod_location_check.py"], check=True)
+            print("mod_location_check.py ran successfully.")
+        except subprocess.CalledProcessError as e:
+            print(f"Error running mod_location_check.py: {e}")
+
     # Function to run dll_unhooker.py
     def run_dll_unhooker():
         try:
