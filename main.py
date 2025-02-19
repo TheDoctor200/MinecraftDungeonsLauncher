@@ -150,7 +150,7 @@ def main(page: ft.Page):
                     ),
                     ft.Divider(color="#424242"),  # Dark grey divider
                     ft.Text(
-                        "MCD",
+                        "MCD Launch Options:",
                         size=24,
                         weight=ft.FontWeight.BOLD,
                         color="#E0E0E0",
