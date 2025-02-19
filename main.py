@@ -150,7 +150,7 @@ def main(page: ft.Page):
                     ),
                     ft.Divider(color="#424242"),  # Dark grey divider
                     ft.Text(
-                        "Minecraft Dungeons",
+                        "MCD",
                         size=24,
                         weight=ft.FontWeight.BOLD,
                         color="#E0E0E0",
@@ -198,7 +198,7 @@ def main(page: ft.Page):
                             ft.Image(
                                 src="./assets/favicon.png", width=40, height=40
                             ),
-                            ft.Text("Version 1.3", size=16, color="#E0E0E0"),
+                            ft.Text("Version 1.3", size=16, color="#E0E0E0", weight=ft.FontWeight.BOLD),
                         ],
                         alignment=ft.MainAxisAlignment.START,
                     ),
