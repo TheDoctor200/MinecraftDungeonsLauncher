@@ -53,7 +53,7 @@ def main(page: ft.Page):
     # Function to run update_app.py
     def run_update_app():
         try:
-            subprocess.run(["python", "update_app.pyw"], check=True)
+            subprocess.run(["pythonw", "update_app.pyw"], check=True)
             print("Update script ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running update_app.pyw: {e}")
@@ -295,7 +295,7 @@ def main(page: ft.Page):
     # Function to run dll_hooker.py
     def run_dll_hooker():
         try:
-            subprocess.run(["python", "dll_hooker.pyw"], check=True)
+            subprocess.run(["pythonw", "dll_hooker.pyw"], check=True)
             print("dll_hooker.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running dll_hooker.pyw: {e}")
@@ -303,7 +303,7 @@ def main(page: ft.Page):
     # Function to run character_location_check.py
     def run_charachter_loc():
         try:
-            subprocess.run(["python", "character_location_check.pyw"], check=True)
+            subprocess.run(["pythonw", "character_location_check.pyw"], check=True)
             print("character_location_check.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running character_location_check.pyw: {e}")
@@ -311,7 +311,7 @@ def main(page: ft.Page):
     # Function to run mod_location_check.py
     def run_mods_loc():
         try:
-            subprocess.run(["python", "mod_location_check.pyw"], check=True)
+            subprocess.run(["pythonw", "mod_location_check.pyw"], check=True)
             print("mod_location_check.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running mod_location_check.pyw: {e}")
@@ -319,7 +319,7 @@ def main(page: ft.Page):
     # Function to run dll_unhooker.py
     def run_dll_unhooker():
         try:
-            subprocess.run(["python", "dll_unhooker.pyw"], check=True)
+            subprocess.run(["pythonw", "dll_unhooker.pyw"], check=True)
             print("dll_unhooker.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running dll_unhooker.pyw: {e}")
