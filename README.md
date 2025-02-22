@@ -33,11 +33,10 @@ python main.py
 **Q:** Which Minecraft Dungeons Versions are supported?<br>
 **A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
 
-**Q:**packagin cmd:<br>
+**Q:** packagin cmd: <br>
 **A:** 
 <br>flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-name MCD_Launcher --icon ./assets/favicon.ico<br>
 
-<br>
 <br>
 **Q:** Where to get mods?
 <br>**A:**<br><a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong><br>
