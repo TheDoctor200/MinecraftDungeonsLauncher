@@ -42,20 +42,21 @@ def main(page: ft.Page):
     # Set the app icon
     page.icon = "assets/favicon.png"  # Set the path to your favicon
     page.bgcolor = "#1C1C1C"  # Dark background for the whole page
+    page.window_icon = "assets/favicon.ico"  
 
     player_name = "TheDoctor" # Variable to store Player Name
 
     # Load settings
     settings = load_settings()
     page.scale = settings.get("app_scale", 1.0)
-
+    
     # Function to run update_app.py
     def run_update_app():
         try:
-            subprocess.run(["python", "update_app.py"], check=True)
+            subprocess.run(["python", "update_app.pyw"], check=True)
             print("Update script ran successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running update_app.py: {e}")
+            print(f"Error running update_app.pyw: {e}")
 
     # Function to show settings page
     def show_settings(e):
@@ -294,34 +295,34 @@ def main(page: ft.Page):
     # Function to run dll_hooker.py
     def run_dll_hooker():
         try:
-            subprocess.run(["python", "dll_hooker.py"], check=True)
-            print("dll_hooker.py ran successfully.")
+            subprocess.run(["python", "dll_hooker.pyw"], check=True)
+            print("dll_hooker.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running dll_hooker.py: {e}")
+            print(f"Error running dll_hooker.pyw: {e}")
 
     # Function to run character_location_check.py
     def run_charachter_loc():
         try:
-            subprocess.run(["python", "character_location_check.py"], check=True)
-            print("character_location_check.py ran successfully.")
+            subprocess.run(["python", "character_location_check.pyw"], check=True)
+            print("character_location_check.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running character_location_check.py: {e}")
+            print(f"Error running character_location_check.pyw: {e}")
 
     # Function to run mod_location_check.py
     def run_mods_loc():
         try:
-            subprocess.run(["python", "mod_location_check.py"], check=True)
-            print("mod_location_check.py ran successfully.")
+            subprocess.run(["python", "mod_location_check.pyw"], check=True)
+            print("mod_location_check.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running mod_location_check.py: {e}")
+            print(f"Error running mod_location_check.pyw: {e}")
 
     # Function to run dll_unhooker.py
     def run_dll_unhooker():
         try:
-            subprocess.run(["python", "dll_unhooker.py"], check=True)
-            print("dll_unhooker.py ran successfully.")
+            subprocess.run(["python", "dll_unhooker.pyw"], check=True)
+            print("dll_unhooker.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running dll_unhooker.py: {e}")
+            print(f"Error running dll_unhooker.pyw: {e}")
     
      # Function to display README.md in a transparent window
     def show_readme(e):
