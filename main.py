@@ -157,6 +157,15 @@ def main(page: ft.Page):
                         color="#E0E0E0",
                     ),
                     ft.TextButton(
+                        "Launch Game",
+                        on_click=lambda e: run_start_game(),
+                        style=ft.ButtonStyle(
+                            color="#E0E0E0",
+                            shape=ft.RoundedRectangleBorder(radius=8),
+                            bgcolor="#18e2d5",  
+                        ),
+                    ),
+                    ft.TextButton(
                         "Offline Play",
                         on_click=lambda e: run_dll_hooker(),
                         style=ft.ButtonStyle(
@@ -323,6 +332,14 @@ def main(page: ft.Page):
             print("dll_unhooker.pyw ran successfully.")
         except subprocess.CalledProcessError as e:
             print(f"Error running dll_unhooker.pyw: {e}")
+
+    # Function to run start_game.pyw
+    def run_start_game():
+        try:
+            subprocess.run(["pythonw", "start_game.pyw"], check=True)
+            print("start_game.pyw ran successfully.")
+        except subprocess.CalledProcessError as e:
+            print(f"Error running start_game.pyw: {e}")
     
      # Function to display README.md in a transparent window
     def show_readme(e):
