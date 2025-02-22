@@ -37,7 +37,6 @@ python main.py
 **A:** 
 <br>flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-name MCD_Launcher --icon ./assets/favicon.ico<br>
 
-<br>
 **Q:** Where to get mods?
 <br>**A:**<br><a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong><br>
 <a href="https://www.nexusmods.com/minecraftdungeons"><strong>Nexusmods</strong></a>
