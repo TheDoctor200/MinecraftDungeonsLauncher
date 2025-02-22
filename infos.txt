@@ -7,4 +7,5 @@ A: Use the character location Button :)
 Q: How do i use mods:
 A: Click the "mod button" and in this folder, create a new folder called "~mods" put your .pak files in there.
 
+MAKE SURE TO ENABLE FLIGHT MODE WHEN PLAYING OFFLINE!!
 Made by TheDoctor
