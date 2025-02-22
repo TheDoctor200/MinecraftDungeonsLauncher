@@ -33,10 +33,10 @@ python main.py
 **Q:** Which Minecraft Dungeons Versions are supported?<br>
 **A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
 
-**Q:** How do i Import my Save Files from the other profile:<br>
-**A:** <br>You can find your saves inside: <br>
-C:\Users\YourUserName\Saved Games\Mojang Studios\Dungeons\LargeNumber\Characters <br>copy the file inside to the other folder inside 
-./Mojang Studios\Dungeons\2000000000000000\Characters
+**Q:**packagin cmd:<br>
+**A:** 
+<br>flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-name MCD_Launcher --icon ./assets/favicon.ico<br>
+
 <br>
 <br>
 **Q:** Where to get mods?
