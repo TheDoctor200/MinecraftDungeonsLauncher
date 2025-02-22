@@ -13,7 +13,17 @@ CURRENT_VERSION_FILE = "version.txt"  # Path to your app version file
 
 # Utility to display message boxes in foreground
 def show_message_box(title, message, buttons=0x40 | 0x1 | 0x40000):
-    return ctypes.windll.user32.MessageBoxW(0, message, title, buttons)
+    # Display the message box
+    ctypes.windll.user32.MessageBoxW(0, message, title, buttons)
+
+    # Get the message box window handle
+    hwnd = ctypes.windll.user32.GetForegroundWindow()
+
+    # Maximize the message box window
+    ctypes.windll.user32.ShowWindow(hwnd, 3)  # 3 = SW_MAXIMIZE
+
+    # Bring the message box to the foreground
+    ctypes.windll.user32.SetForegroundWindow(hwnd)
 
 # Function to get current version from the local version file
 def get_current_version():
