@@ -11,15 +11,9 @@ GITHUB_API_URL = "https://api.github.com/repos/TheDoctor200/MinecraftDungeonsLau
 RELEASE_PAGE_URL = "https://github.com/TheDoctor200/MinecraftDungeonsLauncher/releases"
 CURRENT_VERSION_FILE = "version.txt"  # Path to your app version file
 
-# Hide console window
-def hide_console():
-    """Hides the console window (Windows only)."""
-    if sys.platform == "win32":
-        ctypes.windll.user32.ShowWindow(ctypes.windll.kernel32.GetConsoleWindow(), 0)
-
-# Utility to display message boxes
+# Utility to display message boxes in foreground
 def show_message_box(title, message):
-    ctypes.windll.user32.MessageBoxW(0, message, title, 0x40 | 0x1)  # 0x40 = INFO_ICON, 0x1 = OK_BUTTON
+    ctypes.windll.user32.MessageBoxW(0, message, title, 0x40 | 0x1 | 0x40000)  # 0x40 = INFO_ICON, 0x1 = OK_BUTTON, 0x40000 = TOPMOST
 
 # Function to get current version from the local version file
 def get_current_version():
@@ -54,8 +48,6 @@ def check_for_updates():
 
 # Main update function
 def main():
-    hide_console()  # Hide console immediately
-
     update_needed, latest_version = check_for_updates()
 
     if update_needed is True:
@@ -73,5 +65,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
