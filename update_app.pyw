@@ -12,8 +12,8 @@ RELEASE_PAGE_URL = "https://github.com/TheDoctor200/MinecraftDungeonsLauncher/re
 CURRENT_VERSION_FILE = "version.txt"  # Path to your app version file
 
 # Utility to display message boxes in foreground
-def show_message_box(title, message):
-    ctypes.windll.user32.MessageBoxW(0, message, title, 0x40 | 0x1 | 0x40000)  # 0x40 = INFO_ICON, 0x1 = OK_BUTTON, 0x40000 = TOPMOST
+def show_message_box(title, message, buttons=0x40 | 0x1 | 0x40000):
+    return ctypes.windll.user32.MessageBoxW(0, message, title, buttons)
 
 # Function to get current version from the local version file
 def get_current_version():
@@ -51,10 +51,10 @@ def main():
     update_needed, latest_version = check_for_updates()
 
     if update_needed is True:
-        show_message_box("Update Available", f"A new version {latest_version} is available.")
-        webbrowser.open(RELEASE_PAGE_URL)
-        time.sleep(2)
-
+        response = show_message_box("Update Available", f"A new version {latest_version} is available. Do you want to open the download page?", 0x40 | 0x1 | 0x2 | 0x40000)  # Yes/No Buttons
+        if response == 6:  # 6 = IDYES
+            webbrowser.open(RELEASE_PAGE_URL)
+        
     elif update_needed is False:
         show_message_box("No Updates Available", "You are already using the latest version.")
 
@@ -65,6 +65,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
