@@ -29,6 +29,9 @@ run the following file under Windows, open a terminal at the files location:
 ```sh
 python main.py
 ```
+
+## Please make sure to turn on flight mode, when playing offline and disable wifi!
+
 ## FAQ:
 **Q:** Which Minecraft Dungeons Versions are supported?<br>
 **A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
@@ -40,6 +43,10 @@ python main.py
 **Q:** Where to get mods?
 <br>**A:**<br><a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong><br>
 <a href="https://www.nexusmods.com/minecraftdungeons"><strong>Nexusmods</strong></a>
+
+**Q:** Where to find source code of the dll file?
+<br>**A:**<br><a href="https://cs.rin.ru/forum/viewtopic.php?f=10&t=97669&hilit=minecraft+dungeons"><strong>CSRinRu</strong><br>
+
 
 **Modding Tools:** <br>
 <a href="https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit"><strong>Mod-Kit</strong><br>
@@ -64,7 +71,8 @@ a project by TheDoctor
 brought to life with the goal to make the already amazing Minecraft Dungeons Game better and keeping it alive with an offline mode to enjoy it on the go :)
 <br> 
 	<br>
-	NOTE: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER
+	NOTE: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER!
+	YOU NEED A LEGIT COPY TO USE THE LAUNCHER!
 </p>
 
 ---
