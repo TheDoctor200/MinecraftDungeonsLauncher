@@ -74,7 +74,7 @@ brought to life with the goal to make the already amazing Minecraft Dungeons Gam
 	NOTE: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER!
 	YOU NEED A LEGIT COPY TO USE THE LAUNCHER!
 	Support me, my hard work and future development:
-Crypto Wallet Adress: 0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2 (ETH, LTC, BNB)
+Crypto Wallet Adress: 0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2 (ETH)
 </p>
 
 ---
