@@ -2,10 +2,12 @@ import flet as ft
 import subprocess
 import os
 import json
+import os.path
 
 # Path to RUNE.ini
 rune_ini_file = "./RUNE.ini"
 settings_file = "./settings.json"  # File to store settings
+game_path_file = "./game_path.json"  # File to store game path settings
 
 # Load settings from file
 def load_settings():
@@ -22,6 +24,28 @@ def save_settings(settings):
     with open(settings_file, "w") as f:
         json.dump(settings, f)
 
+# Load game path settings
+def load_game_path():
+    try:
+        with open(game_path_file, "r") as f:
+            path_settings = json.load(f)
+            return path_settings.get("game_path", "")
+    except FileNotFoundError:
+        return ""
+
+# Save game path settings
+def save_game_path(game_path):
+    with open(game_path_file, "w") as f:
+        json.dump({"game_path": game_path}, f)
+
+# Check if default game path works
+def check_default_game_path():
+    default_paths = [
+        "C:\\Program Files\\WindowsApps\\Microsoft.Dungeons_1.0.0.0_x64__8wekyb3d8bbwe\\Dungeons\\Binaries\\Win64\\Dungeons.exe",
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\MinecraftDungeons\\Dungeons\\Binaries\\Win64\\Dungeons.exe"
+    ]
+    return any(os.path.exists(path) for path in default_paths)
+
 # Update RUNE.ini file with the player's name
 def update_rune_ini(player_name):
     if os.path.exists(rune_ini_file):
@@ -36,7 +60,6 @@ def update_rune_ini(player_name):
             f.writelines(lines)
     else:
         print(f"Error: {rune_ini_file} not found.")
-
 
 def main(page: ft.Page):
     # Set the app icon
@@ -71,11 +94,25 @@ def main(page: ft.Page):
             content_padding=10, # Padding around the input text
         )
 
+        # Add game path input
+        game_path_input = ft.TextField(
+            value=load_game_path(),
+            label="Custom Game Path (optional)",
+            width=300,
+            multiline=True,
+            border_radius=ft.border_radius.all(5),
+            border_color="#424242",
+            focused_border_color="#FF5722",
+            content_padding=10,
+        )
+
         # Save settings and return to the main app
         def close_settings_and_save(e):
             global player_name
             player_name = name_input.value  # Update the global player name
             update_rune_ini(player_name)  # Update the INI file
+            if game_path_input.value.strip():  # Only save if path is provided
+                save_game_path(game_path_input.value.strip())
             page.controls[0] = main_view()  # Go back to the main view
             page.update()
 
@@ -93,6 +130,13 @@ def main(page: ft.Page):
                         "Enter your player name:", size=16, color="#E0E0E0"
                     ),
                     name_input,
+                    ft.Text(
+                        "Custom Game Installation Path:", size=16, color="#E0E0E0"
+                    ),
+                    game_path_input,
+                    ft.Text(
+                        "Only set this if the game doesn't launch normally", size=12, color="#808080", italic=True
+                    ),
                     ft.ElevatedButton(
                         "Update App",
                         on_click=lambda e: run_update_app(),
@@ -336,10 +380,15 @@ def main(page: ft.Page):
     # Function to run start_game.pyw
     def run_start_game():
         try:
-            subprocess.run(["pythonw", "start_game.pyw"], check=True)
-            print("start_game.pyw ran successfully.")
+            custom_path = load_game_path()
+            if custom_path and os.path.exists(custom_path):
+                subprocess.run([custom_path], check=True)
+                print("Game started using custom path.")
+            else:
+                subprocess.run(["pythonw", "start_game.pyw"], check=True)
+                print("Game started using default path.")
         except subprocess.CalledProcessError as e:
-            print(f"Error running start_game.pyw: {e}")
+            print(f"Error starting game: {e}")
     
      # Function to display README.md in a transparent window
     def show_readme(e):
