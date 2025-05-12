@@ -41,7 +41,7 @@ python main.py
 
 ### ❓ Which Minecraft Dungeons versions are supported?
 - ✅ Only the **Minecraft Launcher Version** is supported.  
-- ❌ The **Microsoft Store / Xbox Version** is not officially supported.
+- ✅ The **Microsoft Store / Xbox Version** *is not recommended, but works with latest development build.
 
 ### ⚙️ Packaging Command
 ```bash
