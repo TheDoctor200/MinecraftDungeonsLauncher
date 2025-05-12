@@ -1,82 +1,92 @@
 <p align="center">
-	<picture>
-		<source media="(prefers-color-scheme: dark)" srcset="assets/Minecraft_Dungeons_Ultimate_Edition.png" width=400px>
-		<img src="docs/source/_static/logo-light.png" alt="Logo" width=400px>
-	</picture>
+  <picture>
+	<source media="(prefers-color-scheme: dark)" srcset="assets/Minecraft_Dungeons_Ultimate_Edition.png" width="400px">
+	<img src="docs/source/_static/logo-light.png" alt="Logo" width="400px">
+  </picture>
 </p>
+
 <p align="center">
-	<strong>
-		A nice Minecraft Dungeons Launcher with many features and Offline Play
-	</strong>
-	<br>
-	<br>
-	<a href="https://thedoctor.ct.ws">
-		<strong>TheDoctors Socials</strong>
-	</a>
+  <strong>🧱 A Feature-Rich Minecraft Dungeons Launcher with Offline Play Support 🎮</strong>
+  <br><br>
+  <a href="https://thedoctor.ct.ws"><strong>🌐 TheDoctor's Socials</strong></a>
 </p>
 
-# Installation
+---
 
-Install the Launcher via your terminal with Source Code or precompiled Windows installer in release page.
+# 🚀 Installation
 
-## Building with Source Code:
+You can either **build from source** or use the **precompiled Windows installer** available on the [Releases Page](https://github.com/yourrepo/releases).
 
-~~Linux: `pip3 install -r requirements.txt`~~<br>
+## 🔧 Building from Source
 
-Windows: `pip install -r requirements.txt`
-run the following file under Windows, open a terminal at the files location:
-
-```sh
+### ✅ Windows
+```bash
+pip install -r requirements.txt
 python main.py
 ```
 
-## Please make sure to turn on flight mode, when playing offline and disable wifi!
+> 💡 Tip: Open a terminal in the project directory before running the command.
 
-## FAQ:
-**Q:** Which Minecraft Dungeons Versions are supported?<br>
-**A:** The Launcher is made for the **Minecraft Launcher Version** only, not the Microsoft Store Version.<br>
-
-**Q:** packagin cmd: <br>
-**A:** 
-<br>flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-name MCD_Launcher --icon ./assets/favicon.ico<br>
-
-**Q:** Where to get mods?
-<br>**A:**<br><a href="https://www.curseforge.com/minecraft-dungeons"><strong>Curseforge</strong><br>
-<a href="https://www.nexusmods.com/minecraftdungeons"><strong>Nexusmods</strong></a>
-
-**Q:** Where to find source code of the dll file?
-<br>**A:**<br><a href="https://cs.rin.ru/forum/viewtopic.php?f=10&t=97669&hilit=minecraft+dungeons"><strong>CSRinRu</strong><br>
-
-
-**Modding Tools:** <br>
-<a href="https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit"><strong>Mod-Kit</strong><br>
-<a href="https://github.com/CutFlame/MCDSaveEdit">
-		<strong>Minecraft Dungeons Save File Editor</strong></a>
-<br>
-<br>
-
->The **Microsoft Store / Xbox Version** might work if you edit **RUNE.ini** manually to your prefered Playername and copy it over with **winm.dll** into the game directory where <br> **Dungeons-Win64-Shipping.exe** is located.
-<br>
+~~### 🐧 Linux~~  
+> ⚠️ Currently not supported on Linux.
 
 ---
 
-<br>
-<p align=center>
-<img src="https://avatars.githubusercontent.com/u/88980346?v=4" alt="vri" width=110px>
-</p>
-<p align=center>
-a project by TheDoctor
-</p>
-<p align=center>
-brought to life with the goal to make the already amazing Minecraft Dungeons Game better and keeping it alive with an offline mode to enjoy it on the go :)
-<br> 
-	<br>
-	NOTE: NOT AFFILIATED WITH MOJANG IN ANY WAY / UNOFFICIAL LAUNCHER!
-	YOU NEED A LEGIT COPY TO USE THE LAUNCHER!
-	Support me, my hard work and future development:
-Crypto Wallet Adress: 0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2 (ETH)
+## 📴 Offline Mode Reminder  
+🔌 Please **enable Flight Mode** and **disable Wi-Fi** when playing offline!
+
+---
+
+# ❓ FAQ
+
+### ❓ Which Minecraft Dungeons versions are supported?
+- ✅ Only the **Minecraft Launcher Version** is supported.  
+- ❌ The **Microsoft Store / Xbox Version** is not officially supported.
+
+### ⚙️ Packaging Command
+```bash
+flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-name MCD_Launcher --icon ./assets/favicon.ico
+```
+
+### 📦 Where to find mods?
+- 🔗 [**CurseForge**](https://www.curseforge.com/minecraft-dungeons)  
+- 🔗 [**NexusMods**](https://www.nexusmods.com/minecraftdungeons)
+
+### 🧩 Source code for the DLL?
+- 🧵 [**CSRinRu Forum Thread**](https://cs.rin.ru/forum/viewtopic.php?f=10&t=97669&hilit=minecraft+dungeons)
+
+### 🛠️ Modding Tools
+- 🧰 [**Mod Kit**](https://www.curseforge.com/minecraft-dungeons/utility/dungeons-mod-kit)  
+- 💾 [**MCD Save Editor**](https://github.com/CutFlame/MCDSaveEdit)
+
+> 📝 Note: For Microsoft Store/Xbox users, you *might* get it working by editing `RUNE.ini` with your player name and copying it along with `winm.dll` into the game directory where `Dungeons-Win64-Shipping.exe` is located.
+
+---
+
+# 🖼️ Preview
+
+<p align="center">
+  <img src="./assets/MCD_Launcher_Preview.png" alt="Launcher Preview" width="600px">
 </p>
 
 ---
+
+<p align="center">
+  <img src="https://avatars.githubusercontent.com/u/88980346?v=4" alt="vri" width="110px">
+</p>
+
+<p align="center">
+  🛠️ A project by <strong>TheDoctor</strong>
+</p>
+
+<p align="center">
+  ❤️ Built with love to improve the amazing Minecraft Dungeons experience and keep it alive with offline support — perfect for gaming on the go!
+  <br><br>
+  ⚠️ <strong>Unofficial Launcher — Not affiliated with Mojang!</strong><br>
+  🎫 You need a **legit copy** of the game to use this launcher.
+  <br><br>
+  🙏 Support future development & my work:  
+  <strong>ETH Wallet:</strong> `0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2`
+</p>
 
  
