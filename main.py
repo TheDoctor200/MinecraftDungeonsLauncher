@@ -62,7 +62,8 @@ def update_rune_ini(player_name):
         print(f"Error: {rune_ini_file} not found.")
 
 def main(page: ft.Page):
-    # Set the app icon
+    # Set the app icon and title
+    page.title = "Minecraft Dungeons Launcher"
     page.icon = "assets/favicon.png"  # Set the path to your favicon
     page.bgcolor = "#1C1C1C"  # Dark background for the whole page
     page.window_icon = "assets/favicon.ico"  
