@@ -80,13 +80,12 @@ flet pack main.py --name MCDLauncher --file-description MCDLauncher --product-na
 </p>
 
 <p align="center">
-  ❤️ Built with love to improve the amazing Minecraft Dungeons experience and keep it alive with offline support — perfect for gaming on the go!
-  <br><br>
+  ❤️ Built with love to improve the amazing Minecraft Dungeons experience and keep it alive with offline support — perfect for gaming on the go!<br><br>
   ⚠️ <strong>Unofficial Launcher — Not affiliated with Mojang!</strong><br>
-  🎫 You need a **legit copy** of the game to use this launcher.
-  <br><br>
-  🙏 Support future development & my work:  
-  <strong>ETH Wallet:</strong> `0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2`
+  🎫 You need a <strong>legit copy</strong> of the game to use this launcher.<br><br>
+  🙏 <strong>Support future development & my work:</strong><br>
+  <strong>Wallet Address:</strong> <code>0x4338665CBB7B2485A8855A139b75D5e34AB0DB94</code><br>
+  <strong>ETH Wallet:</strong> <code>0xfbe3E2337e7bCfC9245f0C2eAeF16597f0Bb2Dc2</code>
 </p>
 
- 
+
