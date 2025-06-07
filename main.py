@@ -2,425 +2,339 @@ import flet as ft
 import subprocess
 import os
 import json
-import os.path
 
-# Path to RUNE.ini
-rune_ini_file = "./RUNE.ini"
-settings_file = "./settings.json"  # File to store settings
-game_path_file = "./game_path.json"  # File to store game path settings
+SETTINGS_FILE = "settings.json"
+GAME_PATH_FILE = "game_path.json"
+RUNE_INI_FILE = "RUNE.ini"
 
-# Load settings from file
 def load_settings():
     try:
-        with open(settings_file, "r") as f:
-            settings = json.load(f)
-            return settings
-    except FileNotFoundError:
-        # Return default settings if file not found
-        return {"app_scale": 1.0}
+        with open(SETTINGS_FILE, "r") as f:
+            return json.load(f)
+    except Exception:
+        return {"app_scale": 1.0, "player_name": "Player"}
 
-# Save settings to file
 def save_settings(settings):
-    with open(settings_file, "w") as f:
+    with open(SETTINGS_FILE, "w") as f:
         json.dump(settings, f)
 
-# Load game path settings
 def load_game_path():
     try:
-        with open(game_path_file, "r") as f:
-            path_settings = json.load(f)
-            return path_settings.get("game_path", "")
-    except FileNotFoundError:
+        with open(GAME_PATH_FILE, "r") as f:
+            return json.load(f).get("game_path", "")
+    except Exception:
         return ""
 
-# Save game path settings
 def save_game_path(game_path):
-    with open(game_path_file, "w") as f:
+    with open(GAME_PATH_FILE, "w") as f:
         json.dump({"game_path": game_path}, f)
 
-# Check if default game path works
-def check_default_game_path():
-    default_paths = [
-        "C:\\Program Files\\WindowsApps\\Microsoft.Dungeons_1.0.0.0_x64__8wekyb3d8bbwe\\Dungeons\\Binaries\\Win64\\Dungeons.exe",
-        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\MinecraftDungeons\\Dungeons\\Binaries\\Win64\\Dungeons.exe"
-    ]
-    return any(os.path.exists(path) for path in default_paths)
-
-# Update RUNE.ini file with the player's name
 def update_rune_ini(player_name):
-    if os.path.exists(rune_ini_file):
-        with open(rune_ini_file, "r") as f:
+    if os.path.exists(RUNE_INI_FILE):
+        with open(RUNE_INI_FILE, "r") as f:
             lines = f.readlines()
-        # Modify the UserName line in the ini file
         for i, line in enumerate(lines):
             if line.startswith("UserName="):
                 lines[i] = f"UserName={player_name}\n"
-        # Write the changes back to the RUNE.ini file
-        with open(rune_ini_file, "w") as f:
+        with open(RUNE_INI_FILE, "w") as f:
             f.writelines(lines)
-    else:
-        print(f"Error: {rune_ini_file} not found.")
 
 def main(page: ft.Page):
-    # Set the app icon and title
     page.title = "Minecraft Dungeons Launcher"
-    page.icon = "assets/favicon.png"  # Set the path to your favicon
-    page.bgcolor = "#1C1C1C"  # Dark background for the whole page
-    page.window_icon = "assets/favicon.ico"  
+    page.window_width = 1100
+    page.window_height = 700
+    page.window_resizable = False
+    page.bgcolor = "#15181e"
+    page.fonts = {"Segoe UI": "assets/SegoeUI.ttf"}
 
-    player_name = "TheDoctor" # Variable to store Player Name
-
-    # Load settings
     settings = load_settings()
+    player_name = settings.get("player_name", "Player")
     page.scale = settings.get("app_scale", 1.0)
-    
-    # Function to run update_app.py
-    def run_update_app():
+
+    # --- Button Actions ---
+    def run_dll_hooker(e=None):
         try:
-            subprocess.run(["pythonw", "update_app.pyw"], check=True)
-            print("Update script ran successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running update_app.pyw: {e}")
+            subprocess.Popen(["python", "dll_hooker.pyw"])
+        except Exception as ex:
+            print(f"Error running dll_hooker.pyw: {ex}")
 
-    # Function to show settings page
-    def show_settings(e):
-        # Text field for player name
+    def run_dll_unhooker(e=None):
+        try:
+            subprocess.Popen(["python", "dll_unhooker.pyw"])
+        except Exception as ex:
+            print(f"Error running dll_unhooker.pyw: {ex}")
+
+    def run_charloc(e=None):
+        try:
+            subprocess.Popen(["python", "character_location_check.pyw"])
+        except Exception as ex:
+            print(f"Error running character_location_check.pyw: {ex}")
+
+    def run_modloc(e=None):
+        try:
+            subprocess.Popen(["python", "mod_location_check.pyw"])
+        except Exception as ex:
+            print(f"Error running mod_location_check.pyw: {ex}")
+
+    def run_start_game(e=None):
+        try:
+            custom_path = load_game_path()
+            if custom_path and os.path.exists(custom_path):
+                subprocess.Popen([custom_path])
+            else:
+                subprocess.Popen(["python", "start_game.pyw"])
+        except Exception as ex:
+            print(f"Error starting game: {ex}")
+
+    # --- Modal Dialogs ---
+    def show_settings_dialog(e=None):
         name_input = ft.TextField(
-            value=player_name,  # Default player name
+            value=player_name,
             label="Player Name",
-            width=300,
-            border_radius=ft.border_radius.all(5), # Rounded corners for input field
-            border_color="#424242", # Dark grey border
-            focused_border_color="#FF5722", # Accent color when focused
-            content_padding=10, # Padding around the input text
-        )
-
-        # Add game path input
-        game_path_input = ft.TextField(
-            value=load_game_path(),
-            label="Custom Game Path (optional)",
-            width=300,
-            multiline=True,
-            border_radius=ft.border_radius.all(5),
+            width=320,
+            border_radius=8,
             border_color="#424242",
             focused_border_color="#FF5722",
             content_padding=10,
         )
-
-        # Save settings and return to the main app
-        def close_settings_and_save(e):
-            global player_name
-            player_name = name_input.value  # Update the global player name
-            update_rune_ini(player_name)  # Update the INI file
-            if game_path_input.value.strip():  # Only save if path is provided
-                save_game_path(game_path_input.value.strip())
-            page.controls[0] = main_view()  # Go back to the main view
-            page.update()
-
-        # Settings page content
-        settings_content = ft.Container(
-            ft.Column(
-                [
-                    ft.Text(
-                        "Settings",
-                        size=32,
-                        weight=ft.FontWeight.BOLD,
-                        color="#FFFFFF",
-                    ),
-                    ft.Text(
-                        "Enter your player name:", size=16, color="#E0E0E0"
-                    ),
-                    name_input,
-                    ft.Text(
-                        "Custom Game Installation Path:", size=16, color="#E0E0E0"
-                    ),
-                    game_path_input,
-                    ft.Text(
-                        "Only set this if the game doesn't launch normally", size=12, color="#808080", italic=True
-                    ),
-                    ft.ElevatedButton(
-                        "Update App",
-                        on_click=lambda e: run_update_app(),
-                        bgcolor="#FF5722",
-                        color="#FFFFFF",
-                        style=ft.ButtonStyle(
-                            shape=ft.RoundedRectangleBorder(radius=5), # Rounded corners for button
-                            padding=ft.padding.symmetric(horizontal=20, vertical=10) 
-                        )
-                    ),
-                    ft.ElevatedButton(
-                        "Save & Close",
-                        on_click=close_settings_and_save,
-                        bgcolor="#4CAF50",
-                        color="#FFFFFF",
-                        style=ft.ButtonStyle(
-                            shape=ft.RoundedRectangleBorder(radius=5), # Rounded corners for button
-                            padding=ft.padding.symmetric(horizontal=20, vertical=10)
-                        )
-                    ),
-                ],
-                alignment=ft.MainAxisAlignment.CENTER,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-                spacing=20,
-            ),
-            bgcolor="#3E3E3E",
-            padding=30,
-            border_radius=15,
-            expand=True,
+        game_path_input = ft.TextField(
+            value=load_game_path(),
+            label="Custom Game Path (optional)",
+            width=320,
+            border_radius=8,
+            border_color="#424242",
+            focused_border_color="#FF5722",
+            content_padding=10,
         )
-        page.controls.clear()
-        page.add(settings_content)  # Add settings content to the page
+        dialog = ft.AlertDialog(
+            title=ft.Text("Settings", size=28, weight=ft.FontWeight.BOLD),
+            content=ft.Column(
+                [
+                    name_input,
+                    game_path_input,
+                    ft.Text("Only set custom path if the game doesn't launch normally.", size=12, color="#808080", italic=True),
+                ],
+                spacing=16,
+            ),
+            actions=[
+                ft.TextButton("Save", on_click=lambda e: save_and_close_settings(dialog, name_input, game_path_input)),
+                ft.TextButton("Cancel", on_click=lambda e: close_dialog(dialog)),
+            ],
+            modal=True,
+            shape=ft.RoundedRectangleBorder(radius=12),
+        )
+        page.dialog = dialog
+        dialog.open = True
         page.update()
 
-    # Main view layout
-    def main_view():
-        # Sidebar content with a dark background, rounded corners, and a subtle shadow
-        sidebar = ft.Container(
-            ft.Column(
-                [
-                    ft.Row(
-                        [
-                            ft.Image(
-                                src="./assets/Glow_Squidy.gif",
-                                width=50,
-                                height=50,
-                            ),
-                            ft.Text(
-                                player_name,  # Use the updated player name
-                                size=20,
-                                color="#E0E0E0",
-                                weight=ft.FontWeight.BOLD,
-                            ),
-                        ],
-                        alignment=ft.MainAxisAlignment.START,
-                    ),
-                    ft.Divider(color="#424242"),  # Dark grey divider
-                    ft.Text(
-                        "MCD Launch Options:",
-                        size=24,
-                        weight=ft.FontWeight.BOLD,
-                        color="#E0E0E0",
-                    ),
-                    ft.TextButton(
-                        "Launch Game",
-                        on_click=lambda e: run_start_game(),
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#18e2d5",  
-                        ),
-                    ),
-                    ft.TextButton(
-                        "Offline Play",
-                        on_click=lambda e: run_dll_hooker(),
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#4CAF50",  # Green button
-                        ),
-                    ),
-                    ft.TextButton(
-                        "Open Character location",
-                        on_click=lambda e: run_charachter_loc(),
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#2196F3",  # Blue button
-                        ),
-                    ),
-                    ft.TextButton(
-                        "Open Mods location",
-                        on_click=lambda e: run_mods_loc(),
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#2196F3",  # Blue button
-                        ),
-                    ),                   
-                    ft.TextButton(
-                        "FAQ",
-                        on_click=show_readme,
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#FF9800",  # Orange button
-                        ),
-                    ),
-                    ft.Divider(color="#424242"),  # Dark grey divider
-                    ft.TextButton(
-                        "Settings",
-                        on_click=show_settings,
-                        style=ft.ButtonStyle(
-                            color="#E0E0E0",
-                            shape=ft.RoundedRectangleBorder(radius=8),
-                            bgcolor="#9E9E9E",  # Grey button
-                        ),
-                    ),
-                    ft.Container(expand=True),
-                    ft.Row(
-                        [
-                            ft.Image(
-                                src="./assets/favicon.png", width=40, height=40
-                            ),
-                            ft.Text("Version 1.3", size=16, color="#E0E0E0", weight=ft.FontWeight.BOLD),
-                        ],
-                        alignment=ft.MainAxisAlignment.START,
-                    ),
-                ],
-                spacing=10,
-                alignment=ft.MainAxisAlignment.START,
-                horizontal_alignment=ft.CrossAxisAlignment.START,
-                expand=True,
+    def save_and_close_settings(dialog, name_input, game_path_input):
+        nonlocal player_name
+        player_name = name_input.value
+        settings["player_name"] = player_name
+        save_settings(settings)
+        update_rune_ini(player_name)
+        save_game_path(game_path_input.value.strip())
+        dialog.open = False
+        page.update()
+        refresh_layout()
+
+    def show_faq_dialog(e=None):
+        try:
+            with open("infos.txt", "r", encoding="utf-8") as f:
+                faq_content = f.read()
+        except Exception as ex:
+            faq_content = f"FAQ file not found.\n{ex}"
+        dialog = ft.AlertDialog(
+            title=ft.Text("FAQ", size=28, weight=ft.FontWeight.BOLD),
+            content=ft.Container(
+                ft.ListView(
+                    controls=[
+                        ft.Text(faq_content, size=16, selectable=True, font_family="Segoe UI"),
+                    ],
+                    width=600,
+                    height=400,
+                    padding=0,
+                    auto_scroll=False,
+                ),
+                width=600,
+                height=400,
+                bgcolor="#23272F",
+                border_radius=8,
+                padding=16,
+                expand=False,
             ),
-            bgcolor="#000000",
-            padding=15,
-            border_radius=15,
-            width=220,
-            # Add a subtle shadow to the sidebar
-            shadow=ft.BoxShadow(
-                color=ft.Colors.BLACK,
-                blur_radius=10,
-                offset=ft.Offset(5, 5),
-            ),
+            actions=[ft.TextButton("Close", on_click=lambda e: close_dialog(dialog))],
+            modal=True,
+            shape=ft.RoundedRectangleBorder(radius=12),
         )
+        page.dialog = dialog
+        dialog.open = True
+        page.update()
 
-        # Main content area with background image and subtle shadow
-        main_content = ft.Container(
-            ft.Column(
-                [
-                    ft.Text(
-                        "Minecraft Dungeons Launcher",
-                        size=32,
-                        weight=ft.FontWeight.BOLD,
-                        color="#FFFFFF",
-                    ),
-                    ft.Image(
-                        src="assets/DungeonsBG.gif",
-                        width=600,
-                        height=400,
-                        border_radius=15,
-                        fit=ft.ImageFit.COVER, # Make sure the image covers the entire area
-                    ),
-                    ft.Text(
-                        "An all-new action-adventure game, inspired by classic dungeon crawlers, now available on PC, Nintendo, Xbox Gamepass and on Steam.",
-                        size=16,
-                        color="#E0E0E0",
-                        text_align=ft.TextAlign.CENTER,
-                    ),
-                    ft.ElevatedButton(
-                        "PLAY ONLINE",
-                        on_click=lambda e: run_dll_unhooker(),
-                        bgcolor="#FF5722",
-                        color="#FFFFFF",
-                        style=ft.ButtonStyle(
-                            shape=ft.RoundedRectangleBorder(radius=10),
-                            padding=ft.padding.symmetric(
-                                horizontal=20, vertical=10
-                            ),
-                        ),
-                    ),
-                ],
-                spacing=20,
-                alignment=ft.MainAxisAlignment.CENTER,
-                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            ),
-            bgcolor="#3E3E3E",
-            padding=30,
-            border_radius=15,
-            # Add a subtle shadow to the main content
-            shadow=ft.BoxShadow(
-                color=ft.Colors.BLACK,
-                blur_radius=10,
-                offset=ft.Offset(5, 5),
-            ),
-        )
-
-        # Return the main view with sidebar and main content
-        return ft.Row(
-            [
-                sidebar,
-                ft.VerticalDivider(width=1, color="#757575"),
-                main_content,
-            ],
-            alignment=ft.MainAxisAlignment.START,
-            expand=True,
-        )
-
-    # Function to run dll_hooker.py
-    def run_dll_hooker():
-        try:
-            subprocess.run(["pythonw", "dll_hooker.pyw"], check=True)
-            print("dll_hooker.pyw ran successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running dll_hooker.pyw: {e}")
-
-    # Function to run character_location_check.py
-    def run_charachter_loc():
-        try:
-            subprocess.run(["pythonw", "character_location_check.pyw"], check=True)
-            print("character_location_check.pyw ran successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running character_location_check.pyw: {e}")
-
-    # Function to run mod_location_check.py
-    def run_mods_loc():
-        try:
-            subprocess.run(["pythonw", "mod_location_check.pyw"], check=True)
-            print("mod_location_check.pyw ran successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running mod_location_check.pyw: {e}")
-
-    # Function to run dll_unhooker.py
-    def run_dll_unhooker():
-        try:
-            subprocess.run(["pythonw", "dll_unhooker.pyw"], check=True)
-            print("dll_unhooker.pyw ran successfully.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error running dll_unhooker.pyw: {e}")
-
-    # Function to run start_game.pyw
-    def run_start_game():
-        try:
-            custom_path = load_game_path()
-            if custom_path and os.path.exists(custom_path):
-                subprocess.run([custom_path], check=True)
-                print("Game started using custom path.")
-            else:
-                subprocess.run(["pythonw", "start_game.pyw"], check=True)
-                print("Game started using default path.")
-        except subprocess.CalledProcessError as e:
-            print(f"Error starting game: {e}")
-    
-     # Function to display README.md in a transparent window
-    def show_readme(e):
-        try:
-            with open("infos.txt", "r") as f:
-                readme_content = f.read()
-
-            dialog = ft.AlertDialog(
-                title=ft.Text("Infos", size=24),
-                content=ft.Text(readme_content),
-                actions=[
-                    ft.TextButton("Close", on_click=lambda e: close_dialog(dialog))
-                ],
-                modal=True,
-                shape=ft.RoundedRectangleBorder(radius=10),
-            )
-
-            page.overlay.append(dialog)
-            dialog.open = True
-            page.update()
-
-        except Exception as e:
-            print(f"Error opening README.md: {e}")
-
-    # Helper function to close the dialog
     def close_dialog(dialog):
         dialog.open = False
         page.update()
 
-    # Set the main view when the app starts
-    page.add(main_view())
+    # --- Navigation Handler ---
+    def on_nav(action):
+        if action == "play":
+            run_start_game()
+        elif action == "offline":
+            run_dll_hooker()
+        elif action == "charloc":
+            run_charloc()
+        elif action == "modloc":
+            run_modloc()
+        elif action == "faq":
+            show_faq_dialog()
+        elif action == "settings":
+            show_settings_dialog()
 
-# Run the app
+    # --- Sidebar ---
+    def sidebar(on_nav):
+        return ft.Container(
+            ft.Column(
+                [
+                    ft.Container(
+                        ft.Image(
+                            src="assets/avatar_default.png",
+                            width=72, height=72, border_radius=36, fit=ft.ImageFit.COVER,
+                        ),
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(top=24, bottom=12),
+                    ),
+                    ft.Text(player_name, size=20, color="#fff", weight=ft.FontWeight.BOLD, font_family="Segoe UI"),
+                    ft.Divider(height=24, color="#23272F"),
+                    ft.IconButton(icon=ft.Icons.PLAY_ARROW, icon_color="#18e2d5", tooltip="Play Online", on_click=lambda e: on_nav("play")),
+                    ft.IconButton(icon=ft.Icons.OFFLINE_BOLT, icon_color="#4CAF50", tooltip="Offline Play", on_click=lambda e: on_nav("offline")),
+                    ft.IconButton(icon=ft.Icons.FOLDER_OPEN, icon_color="#2196F3", tooltip="Character Location", on_click=lambda e: on_nav("charloc")),
+                    ft.IconButton(icon=ft.Icons.EXTENSION, icon_color="#2196F3", tooltip="Mods Location", on_click=lambda e: on_nav("modloc")),
+                    ft.IconButton(icon=ft.Icons.HELP_OUTLINE, icon_color="#FF9800", tooltip="FAQ", on_click=lambda e: on_nav("faq")),
+                    ft.IconButton(icon=ft.Icons.SETTINGS, icon_color="#9E9E9E", tooltip="Settings", on_click=lambda e: on_nav("settings")),
+                    ft.Container(expand=True),
+                    ft.Row(
+                        [
+                            ft.Image(src="assets/favicon.png", width=32, height=32),
+                            ft.Text("v1.3", size=14, color="#B0B8C1", weight=ft.FontWeight.BOLD),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                    ),
+                    ft.Container(height=16)
+                ],
+                alignment=ft.MainAxisAlignment.START,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                spacing=8,
+                expand=True,
+            ),
+            width=90,
+            bgcolor="rgba(35,39,47,0.98)",
+            border_radius=ft.border_radius.only(top_left=0, top_right=24, bottom_left=0, bottom_right=24),
+            shadow=ft.BoxShadow(
+                color="#00000066",
+                blur_radius=18,
+                offset=ft.Offset(0, 6),
+            ),
+            padding=ft.padding.only(top=0, left=0, right=0, bottom=0),
+        )
+
+    # --- Main Content ---
+    def main_content():
+        return ft.Container(
+            ft.Column(
+                [
+                    ft.Image(
+                        src="assets/launcher_hero.gif",  # Use a GIF if you want animation
+                        width=540, height=200, fit=ft.ImageFit.CONTAIN, border_radius=18,
+                    ),
+                    ft.Text(
+                        "Minecraft Dungeons Launcher",
+                        size=38, weight=ft.FontWeight.BOLD, color="#fff", font_family="Segoe UI",
+                        text_align=ft.TextAlign.CENTER,
+                    ),
+                    ft.Text(
+                        "A modern launcher for Minecraft Dungeons.\nPlay online, offline, manage mods, and more.",
+                        size=18, color="#B0B8C1", text_align=ft.TextAlign.CENTER, font_family="Segoe UI",
+                    ),
+                    ft.Row(
+                        [
+                            ft.ElevatedButton(
+                                "PLAY ONLINE",
+                                icon=ft.Icons.PLAY_ARROW,
+                                on_click=lambda e: run_dll_unhooker(e),
+                                bgcolor="#FF5722",
+                                color="#fff",
+                                style=ft.ButtonStyle(
+                                    shape=ft.RoundedRectangleBorder(radius=12),
+                                    padding=ft.padding.symmetric(horizontal=32, vertical=14),
+                                    elevation=6,
+                                ),
+                            ),
+                            ft.ElevatedButton(
+                                "OFFLINE PLAY",
+                                icon=ft.Icons.OFFLINE_BOLT,
+                                on_click=lambda e: run_dll_hooker(e),
+                                bgcolor="#4CAF50",
+                                color="#fff",
+                                style=ft.ButtonStyle(
+                                    shape=ft.RoundedRectangleBorder(radius=12),
+                                    padding=ft.padding.symmetric(horizontal=32, vertical=14),
+                                    elevation=6,
+                                ),
+                            ),
+                        ],
+                        alignment=ft.MainAxisAlignment.CENTER,
+                        spacing=24,
+                    ),
+                ],
+                spacing=28,
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
+            ),
+            bgcolor="rgba(35,39,47,0.92)",
+            padding=48,
+            border_radius=32,
+            shadow=ft.BoxShadow(
+                color="#00000088",
+                blur_radius=24,
+                offset=ft.Offset(0, 8),
+            ),
+            expand=True,
+        )
+
+    # --- Layout Refresh ---
+    def refresh_layout():
+        # Add background image as first control, then overlay the UI
+        page.controls.clear()
+        page.add(
+            ft.Stack(
+                [
+                    ft.Image(
+                        src="assets/launcher_bg.jpg",
+                        width=page.window_width,
+                        height=page.window_height,
+                        fit=ft.ImageFit.COVER,
+                        opacity=0.18,
+                        left=0, top=0, right=0, bottom=0, expand=True,
+                    ),
+                    ft.Container(
+                        ft.Row(
+                            [
+                                sidebar(on_nav),
+                                ft.Container(width=24),
+                                main_content(),
+                            ],
+                            alignment=ft.MainAxisAlignment.CENTER,
+                            expand=True,
+                        ),
+                        expand=True,
+                    ),
+                ],
+                expand=True,
+            )
+        )
+        page.update()
+
+    refresh_layout()
+
 ft.app(target=main, assets_dir="assets")
