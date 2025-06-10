@@ -1,12 +1,16 @@
 <p align="center">
   <picture>
-	<source media="(prefers-color-scheme: dark)" srcset="assets/Minecraft_Dungeons_Ultimate_Edition.png" width="400px">
-	<img src="docs/source/_static/logo-light.png" alt="Logo" width="400px">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/Minecraft_Dungeons_Ultimate_Edition.png" width="400px">
+    <img src="docs/source/_static/logo-light.png" alt="Logo" width="400px">
   </picture>
 </p>
 
 <p align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" width="120px"><br>
   <strong>🧱 A Feature-Rich Minecraft Dungeons Launcher with Offline Play Support 🎮</strong>
+  <br>
+  <strong>Microsoft / Other Editions now available!<br>
+  <span style="color:#18e2d5">Just select install path in app</span></strong>
   <br><br>
   <a href="https://thedoctor.ct.ws"><strong>🌐 TheDoctor's Socials</strong></a>
 </p>
