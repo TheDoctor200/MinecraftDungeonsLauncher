@@ -30,7 +30,7 @@ def load_game_path():
         return ""
 
 
-def save_game_path(game_path):
+def   _game_path(game_path):
     with open(GAME_PATH_FILE, "w") as f:
         json.dump({"game_path": game_path}, f)
 
@@ -145,7 +145,7 @@ def main(page: ft.Page):
             ft.Column(
                 [
                     ft.Text(player_name, size=20, color="#fff", weight=ft.FontWeight.BOLD, font_family="Segoe UI"),
-                    ft.Divider(height=24, color="#23272F"),
+                    ft.Divider(height=24, color=ft.Colors.WHITE),
                     ft.TextButton(
                         content=ft.Row([
                             ft.Text("Online", size=15, color="#18e2d5", font_family="Segoe UI"),
@@ -252,10 +252,10 @@ def main(page: ft.Page):
         game_path_field = ft.TextField(
             label="Game Executable Path",
             value=load_game_path(),
-            width=420,
+            width=340,  # Smaller width
             text_align=ft.TextAlign.CENTER,
-            border_radius=12,
-            bgcolor="transparent",  # Remove color inside input field
+            border_radius=10,  # Slightly smaller radius
+            bgcolor="transparent",
             color=ft.Colors.WHITE,
             border_color="#18e2d5",
             cursor_color=ft.Colors.WHITE,
@@ -273,10 +273,10 @@ def main(page: ft.Page):
         player_name_field = ft.TextField(
             label="Player Name (RUNE.ini)",
             value=load_player_name_from_rune(),
-            width=420,
+            width=340,  # Smaller width
             text_align=ft.TextAlign.CENTER,
-            border_radius=12,
-            bgcolor="transparent",  # Remove color inside input field
+            border_radius=10,
+            bgcolor="transparent",
             color=ft.Colors.WHITE,
             border_color="#18e2d5",
             cursor_color=ft.Colors.WHITE,
@@ -310,8 +310,8 @@ def main(page: ft.Page):
                 field,
                 bgcolor="rgba(35,39,47,0.92)",
                 blur=ft.Blur(sigma_x=3, sigma_y=3),
-                border_radius=12,
-                padding=8,
+                border_radius=10,
+                padding=6,
                 expand=False,
             )
 
@@ -320,8 +320,8 @@ def main(page: ft.Page):
                 button,
                 bgcolor="rgba(35,39,47,0.92)",
                 blur=ft.Blur(sigma_x=3, sigma_y=3),
-                border_radius=12,
-                padding=8,
+                border_radius=10,
+                padding=6,
                 expand=False,
             )
 
@@ -337,21 +337,39 @@ def main(page: ft.Page):
                             font_family="Segoe UI",
                             text_align=ft.TextAlign.CENTER,
                         ),
-                        margin=ft.margin.only(top=-32),
+                        margin=ft.margin.only(top=16),
                     ),
                     ft.Image(
                         src="assets/DungeonsBG.gif",
-                        width=750,   # Smaller width
-                        height=220,  # Smaller height
+                        width=750,
+                        height=250,
                         fit=ft.ImageFit.CONTAIN,
                         border_radius=24,
                     ),
-                    ft.Text(
-                        "A modern launcher for Minecraft Dungeons.\nPlay online, offline, manage mods, and more.",
-                        size=18,
-                        color="#B0B8C1",
-                        text_align=ft.TextAlign.CENTER,
-                        font_family="Segoe UI",
+                    # --- Side by side title and subtitle ---
+                    ft.Container(
+                        ft.Row(
+                            [
+                                ft.Text(
+                                    "A modern launcher for Minecraft Dungeons.",
+                                    size=18,
+                                    color=ft.Colors.WHITE,
+                                    font_family="Segoe UI",
+                                    text_align=ft.TextAlign.LEFT,
+                                ),
+                                ft.Text(
+                                    "Play online, offline, manage mods, and more.",
+                                    size=18,
+                                    color=ft.Colors.WHITE,
+                                    font_family="Segoe UI",
+                                    text_align=ft.TextAlign.LEFT,
+                                ),
+                            ],
+                            spacing=8,  # Normal/small space between texts
+                            alignment=ft.MainAxisAlignment.CENTER,
+                        ),
+                        alignment=ft.alignment.center,
+                        padding=ft.padding.only(top=0, bottom=0),
                     ),
                     # --- New selection bars and save button ---
                     ft.Container(
@@ -365,10 +383,10 @@ def main(page: ft.Page):
                             horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                         ),
                         alignment=ft.alignment.center,
-                        padding=ft.padding.only(top=16, bottom=0),
+                        padding=ft.padding.only(top=20, bottom=0),
                     ),
                 ],
-                spacing=16,
+                spacing=24,
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 alignment=ft.MainAxisAlignment.CENTER,
                 expand=True,
@@ -395,7 +413,7 @@ def main(page: ft.Page):
                     ),
                     ft.Container(
                         bgcolor="rgba(21,24,30,0.20)",
-                        blur=ft.Blur(sigma_x=3, sigma_y=3),
+                        blur=ft.Blur(sigma_x=4, sigma_y=4),
                         expand=True,
                     ),
                     ft.Container(

@@ -6,7 +6,11 @@
 </p>
 
 <p align="center">
-  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" width="120px"><br>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft Logo" width="70px" style="vertical-align:middle;margin-right:10px;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/83/Steam_icon_logo.svg" alt="Steam Logo" width="70px" style="vertical-align:middle;margin-right:10px;">
+  <!-- Use a reliable PNG for Minecraft Launcher icon -->
+  <img src="https://cdn2.steamgriddb.com/icon/0678c572b0d5597d2d4a6b5bd135754c/32/1024x1024.png" alt="Minecraft Launcher Logo" width="70px" style="vertical-align:middle;">
+  <br>
   <strong>🧱 A Feature-Rich Minecraft Dungeons Launcher with Offline Play Support 🎮</strong>
   <br>
   <strong>Microsoft / Other Editions now available!<br>

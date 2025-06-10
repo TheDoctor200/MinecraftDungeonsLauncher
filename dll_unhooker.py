@@ -18,22 +18,31 @@ def load_custom_game_path():
     except (FileNotFoundError, json.JSONDecodeError):
         return ""
 
-def find_game_install_path(game_executable):
-    """Finds the installation path of the game based on the given executable."""
-    # Try default path first
+def find_game_executable_in_folder(folder):
+    """Finds the first .exe in the folder with 'dungeons' in its name (case-insensitive)."""
+    for file in os.listdir(folder):
+        if file.lower().endswith(".exe") and "dungeons" in file.lower():
+            return file
+    return None
+
+def find_game_install_path_and_exe():
+    """Finds the install path and the dungeons exe in it."""
+    # Try custom path from json first
+    custom_path = load_custom_game_path()
+    if custom_path and os.path.isdir(custom_path):
+        exe = find_game_executable_in_folder(custom_path)
+        if exe:
+            return custom_path, exe
+
+    # Try default path
     user_home = os.path.expanduser("~")
     specific_path = os.path.join(user_home, "AppData", "Local", "Mojang", "products", "dungeons", "dungeons", "Dungeons", "Binaries", "Win64")
-    game_executable_path = os.path.join(specific_path, game_executable)
+    if os.path.isdir(specific_path):
+        exe = find_game_executable_in_folder(specific_path)
+        if exe:
+            return specific_path, exe
 
-    if os.path.exists(game_executable_path):
-        return specific_path
-
-    # If default path fails, try custom path from json
-    custom_path = load_custom_game_path()
-    if custom_path and os.path.exists(os.path.join(custom_path, game_executable)):
-        return custom_path
-
-    return None
+    return None, None
 
 def remove_files_from_game_folder(game_folder, files):
     """Removes specified files from the game folder silently."""
@@ -55,15 +64,14 @@ def start_game(game_executable, game_install_path):
 def main():
     hide_console()  # Hide console immediately
 
-    game_executable = "Dungeons-Win64-Shipping.exe"
-    game_install_path = find_game_install_path(game_executable)
+    game_install_path, game_executable = find_game_install_path_and_exe()
 
-    if game_install_path:
+    if game_install_path and game_executable:
         files_to_remove = ["winmm.dll", "RUNE.ini"]
         remove_files_from_game_folder(game_install_path, files_to_remove)
         start_game(game_executable, game_install_path)
     else:
-        print(f"Error: {game_executable} not found in default or custom path")
+        print("Error: No dungeons executable found in default or custom path")
 
 if __name__ == "__main__":
     main()

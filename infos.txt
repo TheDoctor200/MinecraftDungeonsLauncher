@@ -1,5 +1,5 @@
 Q: Which Minecraft Dungeons Versions are supported?
-A: The Launcher is made for the Minecraft Launcher Version only!, not the Microsoft Store Version.
+A: The Launcher is made for the Minecraft Launcher Version, but you can specify your games path (where theDungeons-Win64-Shipping.exe) in the input field.
 
 Q: How do i Import my Save Files from the other profile:
 A: Use the character location Button :)
