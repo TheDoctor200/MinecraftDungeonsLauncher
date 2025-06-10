@@ -96,27 +96,27 @@ def main(page: ft.Page):
     # --- Button Actions ---
     def run_dll_hooker(e=None):
         try:
-            subprocess.Popen(["python", "dll_hooker.py"])
+            subprocess.Popen(["pythonw", "dll_hooker.pyw"])
         except Exception as ex:
-            print(f"Error running dll_hooker.py: {ex}")
+            print(f"Error running dll_hooker.pyw: {ex}")
 
     def run_dll_unhooker(e=None):
         try:
-            subprocess.Popen(["python", "dll_unhooker.py"])
+            subprocess.Popen(["pythonw", "dll_unhooker.pyw"])
         except Exception as ex:
-            print(f"Error running dll_unhooker.py: {ex}")
+            print(f"Error running dll_unhooker.pyw: {ex}")
 
     def run_charloc(e=None):
         try:
-            subprocess.Popen(["python", "character_location_check.py"])
+            subprocess.Popen(["pythonw", "character_location_check.pyw"])
         except Exception as ex:
-            print(f"Error running character_location_check.py: {ex}")
+            print(f"Error running character_location_check.pyw: {ex}")
 
     def run_modloc(e=None):
         try:
-            subprocess.Popen(["python", "mod_location_check.py"])
+            subprocess.Popen(["pythonw", "mod_location_check.pyw"])
         except Exception as ex:
-            print(f"Error running mod_location_check.py: {ex}")
+            print(f"Error running mod_location_check.pyw: {ex}")
 
     def run_start_game(e=None):
         try:
@@ -124,7 +124,7 @@ def main(page: ft.Page):
             if custom_path and os.path.exists(custom_path):
                 subprocess.Popen([custom_path])
             else:
-                subprocess.Popen(["python", "dll_unhooker.py"])
+                subprocess.Popen(["pythonw", "dll_unhooker.pyw"])
         except Exception as ex:
             print(f"Error starting game: {ex}")
 
@@ -217,7 +217,7 @@ def main(page: ft.Page):
                             shape={"": ft.RoundedRectangleBorder(radius=12)},
                             padding={"": 10},
                         ),
-                        on_click=lambda e: subprocess.Popen(["python", "update_app.py"]),
+                        on_click=lambda e: subprocess.Popen(["pythonw", "update_app.pyw"]),
                     ),
                     ft.Container(expand=True),
                     ft.Row(
