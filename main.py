@@ -28,27 +28,11 @@ def _load_module_from_file(mod_name: str, file_name: str):
         return None
     return None
 
-# Local helpers (import if available; otherwise keep subprocess fallback)
-try:
-    import update_app as updater
-except Exception:
-    updater = _load_module_from_file("update_app", "update_app.pyw")
-try:
-    import character_location_check as char_loc
-except Exception:
-    char_loc = _load_module_from_file("character_location_check", "character_location_check.pyw")
-try:
-    import mod_location_check as mod_loc
-except Exception:
-    mod_loc = _load_module_from_file("mod_location_check", "mod_location_check.pyw")
-try:
-    import dll_hooker as dll_hook
-except Exception:
-    dll_hook = _load_module_from_file("dll_hooker", "dll_hooker.pyw")
-try:
-    import dll_unhooker as dll_unhook
-except Exception:
-    dll_unhook = _load_module_from_file("dll_unhooker", "dll_unhooker.pyw")
+# Local helpers (always load as modules from .pyw files for consistency)
+updater = _load_module_from_file("update_app", "update_app.pyw")
+char_loc = _load_module_from_file("character_location_check", "character_location_check.pyw")
+dll_hook = _load_module_from_file("dll_hooker", "dll_hooker.pyw")
+dll_unhook = _load_module_from_file("dll_unhooker", "dll_unhooker.pyw")
 
 # --- Flet compatibility shims (support older/newer APIs) ---
 COLORS = getattr(ft, "colors", None) or getattr(ft, "Colors", None)
@@ -425,16 +409,6 @@ class MinecraftDungeonsLauncher:
                 return
         run_script("character_location_check.pyw")
 
-    def _open_mods_dir(self, e):
-        if mod_loc is not None and hasattr(mod_loc, "check_and_open_directory"):
-            try:
-                mod_loc.check_and_open_directory()
-                return
-            except Exception:
-                pass
-        run_script("mod_location_check.pyw")
-
-    # --- Mod Manager ---
     def _show_mod_manager(self, e):
         mods_dir = self.settings.get(MODS_PATH_KEY, "")
         if not mods_dir or not os.path.isdir(mods_dir):
@@ -709,6 +683,28 @@ def main(page: ft.Page):
     page.window_height = 720
     page.window_resizable = False
     # Avoid colors API differences across Flet versions
+    page.bgcolor = None
+    page.fonts = {"Segoe UI": "assets/SegoeUI.ttf"}
+    page.padding = 0
+    page.window_frameless = True
+    page.window_title_bar_hidden = True
+    page.window_title_bar_buttons_hidden = True
+
+    launcher = MinecraftDungeonsLauncher(page)
+    # Add the built UI control instead of the class itself (not a Flet Control)
+    page.add(launcher.build())
+    page.update()
+
+    page.padding = 0
+    page.window_frameless = True
+    page.window_title_bar_hidden = True
+    page.window_title_bar_buttons_hidden = True
+    
+    launcher = MinecraftDungeonsLauncher(page)
+    # Add the built UI control instead of the class itself (not a Flet Control)
+    page.add(launcher.build())
+    page.update()
+    
     page.bgcolor = None
     page.fonts = {"Segoe UI": "assets/SegoeUI.ttf"}
     page.padding = 0
