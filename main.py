@@ -221,19 +221,19 @@ class MinecraftDungeonsLauncher:
         self.game_path_field = ft.TextField(
             value=self.game_path,
             label="Game Path (folder or exe)",
-            width=400,
+            width=420,  # was 440
             border_color="#18e2d5",
         )
         self.player_name_field = ft.TextField(
             value=self.player_name,
             label="Player Name",
-            width=400,
+            width=420,  # was 440
             border_color="#18e2d5",
         )
         self.mods_folder_field = ft.TextField(
             value=self.mods_folder,
             label="Mods Folder Path",
-            width=400,
+            width=420,  # was 440
             border_color="#18e2d5",
             hint_text="e.g. C:\\Games\\MinecraftDungeons\\Content\\Paks\\~mods",
         )
@@ -288,9 +288,9 @@ class MinecraftDungeonsLauncher:
                 ),
                 ft.Text(
                     get_app_version(),
-                    bottom=10,
-                    right=15,
-                    size=12,
+                    bottom=11,  # was 12
+                    right=16,   # was 18
+                    size=12,    # was 13
                     color=col("WHITE54", "#FFFFFF"),
                 ),
             ]
@@ -303,30 +303,30 @@ class MinecraftDungeonsLauncher:
                 [
                     ft.Image(
                         src="assets/Minecraft_Dungeons_Ultimate_Edition.png",
-                        width=500,
+                        width=530,  # was 560
                         fit=ft.ImageFit.CONTAIN,
                     ),
                     ft.ElevatedButton(
                         "Launch Game",
                         icon=ICONS.PLAY_ARROW if hasattr(ICONS, "PLAY_ARROW") else "play_arrow",
                         on_click=self._launch_game,
-                        width=250,
-                        height=50,
+                        width=240,   # was 260
+                        height=48,   # was 54
                         style=ft.ButtonStyle(
-                            shape=ft.RoundedRectangleBorder(radius=10),
+                            shape=ft.RoundedRectangleBorder(radius=11),  # was 12
                             bgcolor=ACCENT,
                             color=ACCENT_TEXT,
                         ),
                     ),
                     ft.Row(
                         [
-                            ft.Text("Offline"),
+                            ft.Text("Offline", size=14),  # was 15
                             ft.Switch(ref=self.is_online, value=True, on_change=self._toggle_online),
-                            ft.Text("Online"),
+                            ft.Text("Online", size=14),   # was 15
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
                     ),
-                    ft.Container(height=20),
+                    ft.Container(height=19),  # was 22
                     # Simple action bar without background
                     ft.Row(
                         [
@@ -337,13 +337,13 @@ class MinecraftDungeonsLauncher:
                             self._create_action_button(ICONS.SYSTEM_UPDATE if hasattr(ICONS, "SYSTEM_UPDATE") else "system_update", "Update", self._check_updates_ui),
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
-                        spacing=28,
+                        spacing=28,  # was 32
                     ),
                     # Decorative bar removed as requested
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 alignment=ft.MainAxisAlignment.CENTER,
-                spacing=20,
+                spacing=18,  # was 22
             ),
             alignment=ft.alignment.center,
         )
@@ -353,28 +353,40 @@ class MinecraftDungeonsLauncher:
         return ft.Container(
             ft.Column(
                 [
-                    ft.Text("Settings", size=32, weight=ft.FontWeight.BOLD),
+                    ft.Text("Settings", size=31, weight=ft.FontWeight.BOLD),  # was 34
                     self.game_path_field,
                     self.player_name_field,
                     self.mods_folder_field,
                     ft.Row(
                         [
-                            ft.ElevatedButton("Save", icon=ICONS.SAVE if hasattr(ICONS, "SAVE") else "save", on_click=self._save_and_close_settings, bgcolor=ACCENT, color=ACCENT_TEXT),
-                            ft.OutlinedButton("Back", icon=ICONS.ARROW_BACK if hasattr(ICONS, "ARROW_BACK") else "arrow_back", on_click=self._show_main),
+                            ft.ElevatedButton(
+                                "Save",
+                                icon=ICONS.SAVE if hasattr(ICONS, "SAVE") else "save",
+                                on_click=self._save_and_close_settings,
+                                bgcolor=ACCENT,
+                                color=ACCENT_TEXT,
+                                height=44,  # was 48
+                            ),
+                            ft.OutlinedButton(
+                                "Back",
+                                icon=ICONS.ARROW_BACK if hasattr(ICONS, "ARROW_BACK") else "arrow_back",
+                                on_click=self._show_main,
+                                height=44,  # was 48
+                            ),
                         ],
                         alignment=ft.MainAxisAlignment.CENTER,
                     ),
                 ],
                 horizontal_alignment=ft.CrossAxisAlignment.CENTER,
                 alignment=ft.MainAxisAlignment.CENTER,
-                spacing=20,
+                spacing=18,  # was 22
             ),
             alignment=ft.alignment.center,
         )
 
     def _create_action_button(self, icon, tooltip, on_click):
         """Helper to create consistent icon buttons."""
-        return ft.IconButton(icon=icon, tooltip=tooltip, on_click=on_click, icon_size=28)
+        return ft.IconButton(icon=icon, tooltip=tooltip, on_click=on_click, icon_size=28)  # was 32
 
     # --- Event Handlers ---
 
@@ -431,16 +443,20 @@ class MinecraftDungeonsLauncher:
             )
             return
 
-        list_view = ft.ListView(expand=1, spacing=6, padding=0)
+        list_view = ft.ListView(expand=1, spacing=8, padding=0)  # was 10
 
         def refresh_list():
             list_view.controls.clear()
             mods = self._scan_mods(mods_dir)
             if not mods:
-                list_view.controls.append(ft.Text("No mods found in this folder.", color=col("WHITE70", "#DDDDDD")))
+                list_view.controls.append(ft.Text("No mods found in this folder.", size=13, color=col("WHITE70", "#DDDDDD")))  # was 15
             else:
                 for m in mods:
-                    name_text = ft.Text(m["name"], color=ACCENT_TEXT if m["enabled"] else col("WHITE70", "#DDDDDD"))
+                    name_text = ft.Text(
+                        m["name"],
+                        size=14,  # was 16
+                        color=ACCENT_TEXT if m["enabled"] else col("WHITE70", "#DDDDDD"),
+                    )
 
                     def make_toggle(path, name_label):
                         def _on_change(ev):
@@ -453,14 +469,14 @@ class MinecraftDungeonsLauncher:
                         return _on_change
 
                     switch = ft.Switch(value=m["enabled"], on_change=make_toggle(m["path"], name_text))
-                    # Move filename slightly to the right of the switch
+                    # Move filename slightly to the right of the switch, but only for mod manager
                     row = ft.Row(
                         [
                             switch,
-                            ft.Container(content=name_text, padding=ft.padding.only(left=12)),
+                            ft.Container(content=name_text, padding=ft.padding.only(left=18)),  # was 22
                         ],
                         alignment=ft.MainAxisAlignment.START,
-                        spacing=8,
+                        spacing=10,  # was 12
                     )
                     list_view.controls.append(row)
             self.page.update()
@@ -640,7 +656,7 @@ class MinecraftDungeonsLauncher:
         faq_dialog = ft.AlertDialog(
             modal=True,
             title=ft.Text("FAQ"),
-            content=ft.Text(faq_content, selectable=True),
+            content=ft.Text(faq_content, selectable=True, size=14),  # was 16
             actions=[ft.TextButton("Close", on_click=lambda _: self.page.close(faq_dialog))],
             actions_alignment=ft.MainAxisAlignment.END,
         )
