@@ -67,6 +67,7 @@ def col(name: str, default: str = "#FFFFFF"):
 # --- Theme (Minecraft launcher-inspired) ---
 ACCENT = "#3C8527"  # Minecraft green
 ACCENT_TEXT = "#FFFFFF"
+LIGHT_BLUE = "#18e2d5"  # Light blue for buttons
 
 # --- Constants ---
 SETTINGS_FILE = "settings.json"
@@ -443,7 +444,7 @@ class MinecraftDungeonsLauncher:
             )
             return
 
-        list_view = ft.ListView(expand=1, spacing=8, padding=0)  # was 10
+        list_view = ft.ListView(expand=1, spacing=6, padding=0)
 
         def refresh_list():
             list_view.controls.clear()
@@ -501,16 +502,35 @@ class MinecraftDungeonsLauncher:
             except Exception:
                 pass
 
-        refresh_btn = ft.TextButton("Refresh", on_click=lambda _: refresh_list(), style=ft.ButtonStyle(color=ACCENT))
-        open_btn = ft.TextButton("Open Folder", on_click=open_folder, style=ft.ButtonStyle(color=ACCENT))
-        curse_btn = ft.TextButton("Browse CurseForge", on_click=open_curseforge, style=ft.ButtonStyle(color=ACCENT))
-        nexus_btn = ft.TextButton("Browse NexusMods", on_click=open_nexus, style=ft.ButtonStyle(color=ACCENT))
+        refresh_btn = ft.TextButton(
+            "Refresh",
+            on_click=lambda _: refresh_list(),
+            # Remove style=color to use default blue
+        )
+        open_btn = ft.TextButton(
+            "Open Folder",
+            on_click=open_folder,
+            # Remove style=color to use default blue
+        )
+        curse_btn = ft.TextButton(
+            "Browse CurseForge",
+            on_click=open_curseforge,
+            # Remove style=color to use default blue
+        )
+        nexus_btn = ft.TextButton(
+            "Browse NexusMods",
+            on_click=open_nexus,
+            # Remove style=color to use default blue
+        )
 
         dlg = ft.AlertDialog(
             modal=True,
             title=ft.Text("Mod Manager"),
             content=ft.Container(width=520, height=320, content=list_view),
-            actions=[curse_btn, nexus_btn, open_btn, refresh_btn, ft.TextButton("Close", on_click=lambda _: self.page.close(dlg), style=ft.ButtonStyle(color=ACCENT))],
+            actions=[
+                curse_btn, nexus_btn, open_btn, refresh_btn,
+                ft.TextButton("Close", on_click=lambda _: self.page.close(dlg))  # Remove style=color
+            ],
             actions_alignment=ft.MainAxisAlignment.END,
         )
 
@@ -603,8 +623,8 @@ class MinecraftDungeonsLauncher:
                     title=ft.Text("Update Available"),
                     content=ft.Text(result.message or "A new version is available."),
                     actions=[
-                        ft.TextButton("Open Releases", on_click=open_release, style=ft.ButtonStyle(color=ACCENT)),
-                        ft.TextButton("Close", on_click=lambda _: self.page.close(dlg), style=ft.ButtonStyle(color=ACCENT)),
+                        ft.TextButton("Open Releases", on_click=open_release),  # Remove style=color
+                        ft.TextButton("Close", on_click=lambda _: self.page.close(dlg)),  # Remove style=color
                     ],
                     actions_alignment=ft.MainAxisAlignment.END,
                 )
@@ -678,7 +698,7 @@ class MinecraftDungeonsLauncher:
             modal=True,
             title=ft.Text(title),
             content=ft.Text(message),
-            actions=[ft.TextButton("OK", on_click=lambda _: self.page.close(info_dialog), style=ft.ButtonStyle(color=ACCENT))],
+            actions=[ft.TextButton("OK", on_click=lambda _: self.page.close(info_dialog))],
             actions_alignment=ft.MainAxisAlignment.END,
         )
         self.page.open(info_dialog)
