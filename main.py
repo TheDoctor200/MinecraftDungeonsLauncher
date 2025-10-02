@@ -453,10 +453,15 @@ class MinecraftDungeonsLauncher:
                         return _on_change
 
                     switch = ft.Switch(value=m["enabled"], on_change=make_toggle(m["path"], name_text))
-                    row = ft.Row([
-                        switch,
-                        name_text,
-                    ], alignment=ft.MainAxisAlignment.SPACE_BETWEEN)
+                    # Move filename slightly to the right of the switch
+                    row = ft.Row(
+                        [
+                            switch,
+                            ft.Container(content=name_text, padding=ft.padding.only(left=12)),
+                        ],
+                        alignment=ft.MainAxisAlignment.START,
+                        spacing=8,
+                    )
                     list_view.controls.append(row)
             self.page.update()
 
