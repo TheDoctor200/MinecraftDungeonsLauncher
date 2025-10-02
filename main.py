@@ -473,15 +473,23 @@ class MinecraftDungeonsLauncher:
             except Exception:
                 pass
 
+        def open_nexus(_):
+            try:
+                import webbrowser
+                webbrowser.open("https://www.nexusmods.com/minecraftdungeons/mods")
+            except Exception:
+                pass
+
         refresh_btn = ft.TextButton("Refresh", on_click=lambda _: refresh_list(), style=ft.ButtonStyle(color=ACCENT))
         open_btn = ft.TextButton("Open Folder", on_click=open_folder, style=ft.ButtonStyle(color=ACCENT))
         curse_btn = ft.TextButton("Browse CurseForge", on_click=open_curseforge, style=ft.ButtonStyle(color=ACCENT))
+        nexus_btn = ft.TextButton("Browse NexusMods", on_click=open_nexus, style=ft.ButtonStyle(color=ACCENT))
 
         dlg = ft.AlertDialog(
             modal=True,
             title=ft.Text("Mod Manager"),
             content=ft.Container(width=520, height=320, content=list_view),
-            actions=[curse_btn, open_btn, refresh_btn, ft.TextButton("Close", on_click=lambda _: self.page.close(dlg), style=ft.ButtonStyle(color=ACCENT))],
+            actions=[curse_btn, nexus_btn, open_btn, refresh_btn, ft.TextButton("Close", on_click=lambda _: self.page.close(dlg), style=ft.ButtonStyle(color=ACCENT))],
             actions_alignment=ft.MainAxisAlignment.END,
         )
 
