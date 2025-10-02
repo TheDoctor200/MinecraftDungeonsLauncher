@@ -5,6 +5,8 @@ import sys
 import json
 import subprocess
 
+CANDIDATE_EXE_NAMES = ("Dungeons-Win64-Shipping.exe", "MinecraftDungeons.exe")
+
 def hide_console():
     """Hides the console window (Windows only)."""
     if sys.platform == "win32":
@@ -19,29 +21,48 @@ def load_custom_game_path():
     except (FileNotFoundError, json.JSONDecodeError):
         return ""
 
-def find_game_executable_in_folder(folder):
-    """Finds the first .exe in the folder with 'dungeons' in its name (case-insensitive)."""
-    for file in os.listdir(folder):
-        if file.lower().endswith(".exe") and "dungeons" in file.lower():
-            return file
+def first_matching_exe(folder: str):
+    try:
+        for name in os.listdir(folder):
+            if name.lower().endswith(".exe") and ("dungeons" in name.lower() or name in CANDIDATE_EXE_NAMES):
+                return name
+    except Exception:
+        pass
     return None
+
+def resolve_from_custom(custom_path: str):
+    if not custom_path:
+        return None, None
+    p = os.path.expandvars(os.path.expanduser(custom_path))
+    if os.path.isfile(p) and p.lower().endswith(".exe"):
+        return os.path.dirname(p), os.path.basename(p)
+    if os.path.isdir(p):
+        for rel in ["", os.path.join("Dungeons","Binaries","Win64"), os.path.join("Binaries","Win64"), "Win64", "Dungeons"]:
+            folder = os.path.join(p, rel) if rel else p
+            exe = first_matching_exe(folder)
+            if exe:
+                return folder, exe
+        # Last resort: recursive search
+        for root, _dirs, files in os.walk(p):
+            for name in files:
+                if name.lower().endswith(".exe") and ("dungeons" in name.lower() or name in CANDIDATE_EXE_NAMES):
+                    return root, name
+    return None, None
 
 def find_game_install_path_and_exe():
     """Finds the install path and the dungeons exe in it."""
-    # Try custom path from json first
+    # Try custom path (file or folder)
     custom_path = load_custom_game_path()
-    if custom_path and os.path.isdir(custom_path):
-        exe = find_game_executable_in_folder(custom_path)
-        if exe:
-            return custom_path, exe
+    install, exe = resolve_from_custom(custom_path)
+    if install and exe:
+        return install, exe
 
     # Try default path
     user_home = os.path.expanduser("~")
     specific_path = os.path.join(user_home, "AppData", "Local", "Mojang", "products", "dungeons", "dungeons", "Dungeons", "Binaries", "Win64")
-    if os.path.isdir(specific_path):
-        exe = find_game_executable_in_folder(specific_path)
-        if exe:
-            return specific_path, exe
+    install, exe = resolve_from_custom(specific_path)
+    if install and exe:
+        return install, exe
 
     return None, None
 
@@ -50,7 +71,6 @@ def copy_files_to_game_folder(game_folder, files):
     for file in files:
         source_path = os.path.join(os.getcwd(), file)
         destination_path = os.path.join(game_folder, file)
-
         if os.path.exists(source_path):
             shutil.copy(source_path, destination_path)
 

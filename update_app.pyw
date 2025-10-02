@@ -6,6 +6,15 @@ import json
 import sys
 import os
 
+# Lightweight result object for integration with the Flet app
+class UpdateResult:
+    def __init__(self, status: str, current_version: str = None, latest_version: str = None, message: str = None, release_url: str = None):
+        self.status = status  # one of: 'update_available', 'up_to_date', 'error'
+        self.current_version = current_version
+        self.latest_version = latest_version
+        self.message = message
+        self.release_url = release_url
+
 # Constants
 GITHUB_API_URL = "https://api.github.com/repos/TheDoctor200/MinecraftDungeonsLauncher/releases/latest"
 RELEASE_PAGE_URL = "https://github.com/TheDoctor200/MinecraftDungeonsLauncher/releases"
@@ -16,11 +25,11 @@ def show_message_box(title, message):
     ctypes.windll.user32.MessageBoxW(0, message, title, 0x40 | 0x1)  # 0x40 = INFO_ICON, 0x1 = OK_BUTTON
 
 # Function to get current version from the local version file
-def get_current_version():
+def get_current_version(version_file: str = CURRENT_VERSION_FILE):
     try:
-        if os.path.exists(CURRENT_VERSION_FILE):
-            with open(CURRENT_VERSION_FILE, 'r') as version_file:
-                return version_file.read().strip()
+        if os.path.exists(version_file):
+            with open(version_file, 'r', encoding='utf-8') as vf:
+                return vf.read().strip()
         else:
             print("Version file not found. Ensure the version.txt file exists.")
             return None  # No version file found
@@ -31,7 +40,8 @@ def get_current_version():
 # Function to check for the latest version on GitHub
 def get_latest_version():
     try:
-        response = requests.get(GITHUB_API_URL, timeout=10)  # Increased timeout to 10 seconds
+        headers = {"Accept": "application/vnd.github+json"}
+        response = requests.get(GITHUB_API_URL, timeout=10, headers=headers)
         if response.status_code == 200:
             release_info = json.loads(response.text)
             if "tag_name" in release_info:
@@ -49,60 +59,99 @@ def get_latest_version():
         print("Request to GitHub API timed out.")
         return None
 
+def _normalize_version(v: str) -> str:
+    """Normalize version by stripping common prefixes/spaces."""
+    if v is None:
+        return None
+    v = v.strip()
+    if v.lower().startswith('v'):
+        v = v[1:]
+    return v
+
+def _version_key(v: str):
+    """Convert version string into a tuple for comparison. Falls back to string if not purely numeric."""
+    v = _normalize_version(v) or ""
+    parts = []
+    for p in v.replace('-', '.').split('.'):
+        if p.isdigit():
+            parts.append(int(p))
+        else:
+            # split numeric+alpha like 'rc1'
+            num = ''
+            alpha = ''
+            for ch in p:
+                if ch.isdigit() and alpha == '':
+                    num += ch
+                else:
+                    alpha += ch
+            parts.append(int(num) if num else 0)
+            if alpha:
+                parts.append(alpha)
+    return tuple(parts) if parts else (0,)
+
 # Function to check if update is needed
 def check_for_updates():
-    current_version = get_current_version()
-    latest_version = get_latest_version()
-
-    if current_version is None:
-        print("Unable to check current version. Exiting...")
-        return None, None
-
-    if latest_version is None:
-        print("Unable to retrieve the latest version from GitHub.")
-        return None, None
-
-    if current_version and latest_version:
-        print(f"Current Version: {current_version}, Latest Version: {latest_version}")
-        if current_version != latest_version:
-            return True, latest_version
-        else:
-            return False, None
+    """Backward-compatible tuple API: (update_needed, latest_version)
+    Returns:
+        (True, latest) if update available
+        (False, None) if up to date
+        (None, None) on error
+    """
+    res = check_for_updates_result()
+    if res.status == 'update_available':
+        return True, res.latest_version
+    if res.status == 'up_to_date':
+        return False, None
     return None, None
+
+def check_for_updates_result() -> UpdateResult:
+    """Rich API for integrations: returns UpdateResult."""
+    current_version = get_current_version()
+    if current_version is None:
+        return UpdateResult('error', current_version=None, message='Current version not found')
+
+    latest_version = get_latest_version()
+    if latest_version is None:
+        return UpdateResult('error', current_version=current_version, message='Failed to retrieve latest version')
+
+    cv = _normalize_version(current_version)
+    lv = _normalize_version(latest_version)
+    try:
+        is_newer = _version_key(lv) > _version_key(cv)
+    except Exception:
+        # Fallback to strict string inequality
+        is_newer = lv != cv
+
+    if is_newer:
+        msg = f"A new version {latest_version} is available. You are currently using {current_version}."
+        return UpdateResult('update_available', current_version=current_version, latest_version=latest_version, message=msg, release_url=RELEASE_PAGE_URL)
+    else:
+        msg = "You are already using the latest version of the app."
+        return UpdateResult('up_to_date', current_version=current_version, latest_version=latest_version, message=msg, release_url=RELEASE_PAGE_URL)
 
 # Main update function
 def main():
-    # Checking for updates
-    update_needed, latest_version = check_for_updates()
+    # Checking for updates using the rich API
+    result = check_for_updates_result()
 
-    if update_needed is True:
-        # Notify the user that an update is available
+    if result.status == 'update_available':
         show_message_box(
             "Update Available",
-            f"A new version {latest_version} is available. You are currently using an older version."
+            result.message or f"A new version {result.latest_version} is available."
         )
-
-        # Open the browser to the latest release page
-        webbrowser.open(RELEASE_PAGE_URL)
-
-        # Wait for 2 seconds before exiting
+        if result.release_url:
+            webbrowser.open(result.release_url)
         time.sleep(2)
-
-    elif update_needed is False:
-        # Notify user that the app is up to date
+    elif result.status == 'up_to_date':
         show_message_box(
             "No Updates Available",
-            "You are already using the latest version of the app."
+            result.message or "You are already using the latest version of the app."
         )
-
     else:
-        # If there was an issue checking for updates
         show_message_box(
             "Update Check Failed",
-            "Unable to check for updates at this time. Please try again later."
+            result.message or "Unable to check for updates at this time. Please try again later."
         )
-
-    # Close script
     sys.exit()
 
 if __name__ == "__main__":
